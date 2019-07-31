@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>freestar-mobile</groupId>
+  <artifactId>prebid-api-1.0</artifactId>
+  <versioning>
+    <release>FS-1.0.0</release>
+    <versions>
+      <version>FS-1.0.0</version>
+    </versions>
+    <lastUpdated>20190731040018</lastUpdated>
+  </versioning>
+</metadata>
