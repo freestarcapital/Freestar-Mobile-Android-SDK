@@ -1,14 +1,12 @@
 # Android demo app - examples for freestar-android-sdk integration
 The freestar-android-sdk allows you to add [**Freestar**] (https://www.freestar.com) ads to your application.
 
-If you are using a different mediation layer, please switch branches:
+To see instructions for different install options, please switch branches:
 
-[**AdMarvel Branch**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/master)
+[**Reference Application**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master)
+![alt text](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-1.png)
 
-[**DFP Branch**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master)
+[**Install Freestar API Branch**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-api-install)
 
-*** comming soon *** [**MoPub Branch**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master)
-
-
-
+[**Using FreestarBannerAd View**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-banner-ad)
 
