@@ -4,8 +4,11 @@ The freestar-android-sdk allows you to add [**Freestar**] (https://www.freestar.
 To see instructions for different install options, please switch branches:
 
 [**Reference Application**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master)
+![alt text](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-0.png)
+Adapted from the example presented by https://www.youtube.com/channel/UC_Fh8kvtkVPkeihBs42jGcA .
 
 [**Install Freestar API Branch**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-api-install)
+![alt text](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-1.png)
 
 [**Using FreestarBannerAd View**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-banner-ad)
 
@@ -66,4 +69,63 @@ Installing the Freestar API Branch
   articleDetailType=prebid
   articleDetailPlacement=Freestar_Test_320x100
   ads_layout.articleDetailAutoRefresh=120000
+
+
+
+        FreestarAdModel.getInstance(this);
+
+        ViewGroup adView = findViewById(R.id.ads_layout);
+        FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
+        AdEngineType articleDetailType = AdEngineType.valueOf(TargetingModel.getInstance().getProperty("articleDetailType", AdEngineType.prebid.toString()));
+        String adKey = TargetingModel.getInstance().getProperty("articleDetailPlacement");
+        injector.injectBannerAd(articleDetailType, adView, "ads_layout", adKey);
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AdEngineType articleDetailType = AdEngineType.valueOf(TargetingModel.getInstance().getProperty("articleDetailType", AdEngineType.prebid.toString()));
+        FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).resumeAd(articleDetailType);
+    }
+
+    @Override
+    protected void onPause() {
+        AdEngineType articleDetailType = AdEngineType.valueOf(TargetingModel.getInstance().getProperty("articleDetailType", AdEngineType.prebid.toString()));
+        FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).pauseAd(articleDetailType);
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        AdEngineType articleDetailType = AdEngineType.valueOf(TargetingModel.getInstance().getProperty("articleDetailType", AdEngineType.prebid.toString()));
+        FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).destroyAd(articleDetailType);
+        super.onDestroy();
+    }
+
+
+    <!--
+    <LinearLayout
+        android:id="@+id/ads_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        />
+    <com.freestar.android.sdk.view.FreestarBannerAd
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ads_layout"
+        android:layout_width="320dp"
+        android:layout_height="100dp"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        custom:type="prebid"
+        custom:placement="Freestar_Test_320x50"
+        />
+        -->
+    <com.freestar.android.sdk.view.FreestarBannerAd
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:type="prebid"
+        custom:placement="Freestar_Test_320x50"
+        />
 
