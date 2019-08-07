@@ -127,4 +127,11 @@
             android:freezesText="true"
             />
     </LinearLayout>
+    <com.freestar.android.sdk.view.FreestarBannerAd
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:type="prebid"
+        custom:placement="Freestar_Test_320x50"
+        />
 </LinearLayout>
