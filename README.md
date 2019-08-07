@@ -5,7 +5,7 @@ To see instructions for different install tips and options, please switch branch
 
 [**Reference Application**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master)
 
-![alt text](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-0.png)
+![**Basic Reference Application #1**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-0.png)
 
 The basic reference application (#1) can be found here.  A very simple, single activity game app.  It was adapted from the example presented by https://www.youtube.com/channel/UC_Fh8kvtkVPkeihBs42jGcA .
 
@@ -24,34 +24,37 @@ _**Installing the Freestar API Branch**_
   b) In the _assets_ directory, create a _freestar_ads.properties_ file
   c) Add entries:
 
-> ##############################
-> SHARE_GEO_LOCATION=true
-> 
-> PREBID_FSDATA=https://a.pub.network/app/io.freestar.mobile.Freestar-News/fsdata.json
-> PREBID_HOST=https://dev-prebid.pub.network/openrtb2/auction
+>>> ##############################
+ SHARE_GEO_LOCATION=true
+ PREBID_FSDATA=https://a.pub.network/app/io.freestar.mobile.Freestar-News/fsdata.json
+ PREBID_HOST=https://dev-prebid.pub.network/openrtb2/auction
 
 2) Add access permissions to your _AndroidManifest.xml_ in the **manifest** tag block
 
 > <uses-permission android:name="android.permission.INTERNET"/>
+
 > <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 > <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
 > <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 > <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 3) Add add manager meta-data to your _AndroidManifest.xml_ in the **application** tag block
 
-> <meta-data
->   android:name="com.google.android.gms.ads.AD_MANAGER_APP"
->   android:value="true"/>
+>>> <meta-data
+  android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+  android:value="true"/>
 
 4) Add dependency to your _build.gradle_ (Project) in the **buildscript.dependencies** block
 
-> maven {
->   url  "https://dl.bintray.com/freestarmobile/com.freestar.org.prebid"
-> }
+>>> maven {
+  url  "https://dl.bintray.com/freestarmobile/com.freestar.org.prebid"
+}
 
 4) Add dependency to your _build.gradle_ (Module) in the **dependencies** block
 
-    api 'com.freestar.org.prebid:freestarSDK:1.1.0'
+> api 'com.freestar.org.prebid:freestarSDK:1.1.0'
 
 [_**Example video**_](https://drive.google.com/open?id=1vPBw0RJq3inqrUUEfznA4UvHx_P-ilKC)
