@@ -24,34 +24,30 @@ _**Installing the Freestar API Branch**_
   b) In the _assets_ directory, create a _freestar_ads.properties_ file
   c) Add entries:
 
->>> ##############################
+> `##############################
  SHARE_GEO_LOCATION=true
  PREBID_FSDATA=https://a.pub.network/app/io.freestar.mobile.Freestar-News/fsdata.json
- PREBID_HOST=https://dev-prebid.pub.network/openrtb2/auction
+ PREBID_HOST=https://dev-prebid.pub.network/openrtb2/auction`
 
 2) Add access permissions to your _AndroidManifest.xml_ in the **manifest** tag block
 
-> <uses-permission android:name="android.permission.INTERNET"/>
-
-> <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-> <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-> <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-> <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+> `<uses-permission android:name="android.permission.INTERNET"/>
+ <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+ <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+ <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+ <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />`
 
 3) Add add manager meta-data to your _AndroidManifest.xml_ in the **application** tag block
 
->>> <meta-data
+> `<meta-data
   android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-  android:value="true"/>
+  android:value="true"/>`
 
 4) Add dependency to your _build.gradle_ (Project) in the **buildscript.dependencies** block
 
->>> maven {
+> `maven {
   url  "https://dl.bintray.com/freestarmobile/com.freestar.org.prebid"
-}
+}`
 
 4) Add dependency to your _build.gradle_ (Module) in the **dependencies** block
 
