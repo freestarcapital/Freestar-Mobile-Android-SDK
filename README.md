@@ -31,11 +31,11 @@ _**Installing the Freestar API Branch**_
 
 2) Add access permissions to your _AndroidManifest.xml_ in the **manifest** tag block
 
-> `<uses-permission android:name="android.permission.INTERNET"/>
- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />`
+> `<uses-permission android:name="android.permission.INTERNET"/>`
+> `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>`
+> `<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>`
+> `<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />`
+> `<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />`
 
 3) Add add manager meta-data to your _AndroidManifest.xml_ in the **application** tag block
 
