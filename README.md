@@ -6,13 +6,16 @@ To see instructions for different install tips and options, please switch branch
 [**Reference Application**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master)
 
 ![alt text](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-0.png)
-Adapted from the example presented by https://www.youtube.com/channel/UC_Fh8kvtkVPkeihBs42jGcA .
+
+The basic reference application (#1) can be found here.  A very simple, single activity game app.  It was adapted from the example presented by https://www.youtube.com/channel/UC_Fh8kvtkVPkeihBs42jGcA .
 
 [**Install Freestar API Branch**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-api-install)
-![alt text](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-1.png)
+
+Example of reference application #1, with the **Freestar** ads api installed and ready for specific advertising options to be implemented.  All advertising examaples will be derived by the activities defined by this option.
 
 [**Using FreestarBannerAd View**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-banner-ad)
 
+Example of using the <FreestarBannerAd> tag within your _activity_ layout _xml_ files.
 
 _**Installing the Freestar API Branch**_
 
