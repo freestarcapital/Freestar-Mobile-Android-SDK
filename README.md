@@ -30,14 +30,14 @@ _**Using the Freestar FreestarBannerAd tag**_
     />
 ```
 
-2) Configure the _type_ and _placement_ attributes
+2) Configure the _**type**_ and _**placement**_ attributes
 ```
     <com.freestar.android.sdk.view.FreestarBannerAd
        xmlns:custom="http://schemas.android.com/apk/res-auto"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       *custom:type="prebid"*
-       *custom:placement="Freestar_Test_320x50"*
+       custom:type="prebid"
+       custom:placement="Freestar_Test_320x50"
     />
 ```
 
