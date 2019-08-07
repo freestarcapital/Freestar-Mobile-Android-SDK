@@ -43,9 +43,9 @@ _**Using the Freestar FreestarBannerAd tag**_
 
 >   android:layout_height="wrap_content"
 
->   custom:type="prebid"
+>   *custom:type="prebid"*
 
->   custom:placement="Freestar_Test_320x50"
+>   *custom:placement="Freestar_Test_320x50"*
    
 > />
 
