@@ -23,19 +23,31 @@ _**Using the Freestar FreestarBannerAd tag**_
 
 1) Add the *<FreestarBannerAd>* tag to your layout activity _xml_file
 
->>> '<com.freestar.android.sdk.view.FreestarBannerAd
-   xmlns:custom="http://schemas.android.com/apk/res-auto"
-   android:layout_width="wrap_content"
-   android:layout_height="wrap_content"
-   />'
+> <com.freestar.android.sdk.view.FreestarBannerAd
+
+>   xmlns:custom="http://schemas.android.com/apk/res-auto"
+
+>   android:layout_width="wrap_content"
+
+>   android:layout_height="wrap_content"
+
+> />
 
 2) Configure the _type_ and _placement_ attributes
 
->>> '<com.freestar.android.sdk.view.FreestarBannerAd
-   xmlns:custom="http://schemas.android.com/apk/res-auto"
-   android:layout_width="wrap_content"
-   android:layout_height="wrap_content"
-   custom:type="prebid"
-   custom:placement="Freestar_Test_320x50"
-   />'
+> <com.freestar.android.sdk.view.FreestarBannerAd
 
+>   xmlns:custom="http://schemas.android.com/apk/res-auto"
+
+>   android:layout_width="wrap_content"
+
+>   android:layout_height="wrap_content"
+
+>   custom:type="prebid"
+
+>   custom:placement="Freestar_Test_320x50"
+   
+> />
+
+
+[_**Example video**_](https://drive.google.com/open?id=1qFlshPINDZNs5RPi1OWu1M7-66PM1_7x)
