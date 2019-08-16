@@ -1,6 +1,6 @@
 ![Freestar](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/freestar.jpg)
 # Freestar Mobile Android SDK Integration Guide
-# API - _freestar-android-sdk_ installation
+# API - _freestar-android-sdk_ ***View Injector***
 
 ### What's New
 We are pleased to announce the release of our SDK! Banner ad formats are currently supported, with more coming.  Be sure to check-in frequently for the latest releases and announcements.
@@ -8,13 +8,14 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
-| __1.1.0__ | _August 16th, 2019_ |  • Updated to androidx. |
+| __1.2.0__ | _August 16th, 2019_ |  • Updated to androidx. |
+| __1.1.0__ | _June 21st, 2019_ |  • Support FreestarNews app. |
 | __1.0.0__ | _June 21st, 2019_ |  • Initial release. |
 
 ###### Major API Changes
 | Latest |
 | ---- |
-| [ __1.1.0__ ] <br>• Updated the api to latest mopub api and androidx support libraries.<br>|
+| [ __1.2.0__ ] <br>• Updated the api to latest mopub api and androidx support libraries.<br>|
 
 | Previous |
 | ---- |
@@ -24,7 +25,8 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
-| ~> 1.1.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
+| ~> 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
+| = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
 | <= 1.0.0 [EOL]| 17.1.3 | FS-1.0.6 | com.freestar.org.prebid:API1.0 : jcenter() |
 
 ---
@@ -36,52 +38,76 @@ com.android.tools.build:gradle 3.4.2
 ## Getting Started
 ---
 
-Here are the basic steps required to use the SDK with your project.
+Here are the basic steps required to use the injector your project.
 
-`1. ` Setup **Freestar** specific properties control file
-
-`  a)` Create _assets_ directory in your _src/main_ directory
-
-`  b)` In the _assets_ directory, create a _freestar_ads.properties_ file
-
-`  c)` Add preliminary entries:
+`1. ` Create a _LinearLayout_ tag in your activity layout _.xml_ file.  In our example we are going to give it the id of **ads_layout**.
 
 ```
-SHARE_GEO_LOCATION=true
-PREBID_FSDATA=https://a.pub.network/app/io.freestar.mobile.Freestar-News/fsdata.json
-PREBID_HOST=https://dev-prebid.pub.network/openrtb2/auction`
+    <LinearLayout
+        android:id="@+id/ads_layout"
+        android:layout_width="320dp"
+        android:layout_height="100dp"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        />
 ```
 
-`2. ` Add access permissions to your _AndroidManifest.xml_ in the **manifest** tag block
+`2. ` Edit your _assets/freestar_ads.properties_ file and add in your ad specific information (for example it should look something like this)
 
 ```
-<uses-permission android:name="android.permission.INTERNET"/>`
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>`
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>`
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />`
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />`
+articleDetailType=prebid
+articleDetailPlacement=Freestar_Test_320x100
+ads_layout.articleDetailAutoRefresh=120000
 ```
 
-`3. ` Add add manager meta-data to your _AndroidManifest.xml_ in the **application** tag block
+`3. ` Edit your activity class, in the onCreate() method.
 
 ```
-<meta-data
-  android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-  android:value="true"/>
-  ```
+        AdEngineType articleDetailType = AdEngineType.valueOf(FreestarAdModel.getInstance(this).getProperty("articleDetailType", AdEngineType.gam.toString()));
+        String adKey = FreestarAdModel.getInstance(this).getProperty("articleDetailPlacement");
+        if (adKey != null) {
+            playAds = true;
+        } else {
+            System.err.println("missing placement for article detail, check configuration properties");
+            playAds = false;
+        }
 
-`4. ` Add dependency to your _build.gradle_ (Project) in the **buildscript.dependencies** block
+        if (playAds) {
+            ViewGroup adView = findViewById(R.id.ads_layout);
+            FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
+            injector.injectBannerAd(articleDetailType, adView, "ads_layout", adKey);
+        }
 
 ```
-maven {
-  url  "https://dl.bintray.com/freestarmobile/com.freestar.org.prebid"
-}
-```
 
-`5. ` Add dependency to your _build.gradle_ (Module) in the **dependencies** block
+`4. ` Add the following methods to your activity class. 
 
 ```
-api 'com.freestar.org.prebid:freestarSDK:1.1.0'
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (playAds) {
+            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).resumeBannerAds();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if (playAds) {
+            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).pauseBannerAds();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (playAds) {
+            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).destroyBannerAds();
+            FreestarAdModel.releaseInstance(this);
+        }
+        super.onDestroy();
+    }
+
 ```
 
 ## By Example
@@ -102,6 +128,6 @@ Example of reference application #1, with the **Freestar** ads api installed and
 
 Example of using the <FreestarBannerAd> tag within your _activity_ layout _xml_ files.
 
-[_**Example video**_](https://youtu.be/-k5FHg4YXy4)
+[_**Example video**_***Comming Soon***]()
 
 ![**Basic Reference Application #1**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-1.png)

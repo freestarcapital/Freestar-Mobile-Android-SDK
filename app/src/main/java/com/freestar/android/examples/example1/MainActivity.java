@@ -1,15 +1,18 @@
 package com.freestar.android.examples.example1;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.freestar.android.sdk.model.AdEngineType;
 import com.freestar.android.sdk.model.FreestarAdModel;
+import com.freestar.android.sdk.model.FreestarViewInjector;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -20,14 +23,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int player2Points;
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
+    private boolean playAds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         FreestarAdModel.getInstance(this);
+
+        AdEngineType articleDetailType = AdEngineType.valueOf(FreestarAdModel.getInstance(this).getProperty("articleDetailType", AdEngineType.gam.toString()));
+        String adKey = FreestarAdModel.getInstance(this).getProperty("articleDetailPlacement");
+        if (adKey != null) {
+            playAds = true;
+        } else {
+            System.err.println("missing placement for article detail, check configuration properties");
+            playAds = false;
+        }
+
+        if (playAds) {
+            ViewGroup adView = findViewById(R.id.ads_layout);
+            // @@@@@@@@@@ Freestar ad activity - fragment
+            FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
+            injector.injectBannerAd(articleDetailType, adView, "ads_layout", adKey);
+            // @@@@@@@@@@ Freestar ad activity end - fragment
+        }
 
         textViewPlayer1 = findViewById(R.id.text_view_p1);
         textViewPlayer2 = findViewById(R.id.text_view_p2);
@@ -176,4 +196,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         player2Points = savedInstanceState.getInt("player2Points");
         player1Turn = savedInstanceState.getBoolean("player1Turn");
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (playAds) {
+            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).resumeBannerAds();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if (playAds) {
+            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).pauseBannerAds();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (playAds) {
+            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).destroyBannerAds();
+            FreestarAdModel.releaseInstance(this);
+        }
+        super.onDestroy();
+    }
+
 }
