@@ -8,13 +8,14 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
-| __1.1.0__ | _August 16th, 2019_ |  • Updated to androidx. |
+| __1.2.0__ | _August 16th, 2019_ |  • Updated to androidx. |
+| __1.1.0__ | _June 21st, 2019_ |  • Support FreestarNews app. |
 | __1.0.0__ | _June 21st, 2019_ |  • Initial release. |
 
 ###### Major API Changes
 | Latest |
 | ---- |
-| [ __1.1.0__ ] <br>• Updated the api to latest mopub api and androidx support libraries.<br>|
+| [ __1.2.0__ ] <br>• Updated the api to latest mopub api and androidx support libraries.<br>|
 
 | Previous |
 | ---- |
@@ -24,7 +25,8 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
-| ~> 1.1.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
+| ~> 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
+| = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
 | <= 1.0.0 [EOL]| 17.1.3 | FS-1.0.6 | com.freestar.org.prebid:API1.0 : jcenter() |
 
 ---
