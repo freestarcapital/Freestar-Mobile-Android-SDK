@@ -1,7 +1,73 @@
-# Android demo app - _freestar-android-sdk_ integration
-The _**freestar-android-sdk**_ allows you to add [**Freestar**](https://www.freestar.com) driven ads to your application.
+![Freestar](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/freestar.jpg)
+# Freestar Mobile Android SDK Integration Guide
+# API - _freestar-android-sdk_ ***FrestarBannerAd*** tag
 
-To see instructions for different install tips and options, please switch branches:
+### What's New
+We are pleased to announce the release of our SDK! Banner ad formats are currently supported, with more coming.  Be sure to check-in frequently for the latest releases and announcements.
+
+###### Change History
+| Version | Release Date | Description |
+| ---- | ------- | ----------- |
+| __1.2.0__ | _August 16th, 2019_ |  • Updated to androidx. |
+| __1.1.0__ | _June 21st, 2019_ |  • Support FreestarNews app. |
+| __1.0.0__ | _June 21st, 2019_ |  • Initial release. |
+
+###### Major API Changes
+| Latest |
+| ---- |
+| [ __1.2.0__ ] <br>• Updated the api to latest mopub api and androidx support libraries.<br>|
+
+| Previous |
+| ---- |
+| [ __1.0.0__ ]<br>• Test application support release. |
+
+###### GMA SDK Compatibility Matrix
+
+| FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
+| ---- | ----- | ----- | ------------ |
+| ~> 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
+| = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
+| <= 1.0.0 [EOL]| 17.1.3 | FS-1.0.6 | com.freestar.org.prebid:API1.0 : jcenter() |
+
+---
+#### Minimum Requirements
+minSDKVersion 16
+targetSDKVersion 28
+com.android.tools.build:gradle 3.4.2
+
+## Getting Started
+---
+
+Here are the basic steps required to use the **<FreestarBannerAd>** your project.
+
+`0. ` Configure using the "basic reference application" instructions
+
+
+`1. ` Add the *<FreestarBannerAd>* tag to your layout activity _xml_file
+
+```
+    <com.freestar.android.sdk.view.FreestarBannerAd
+       xmlns:custom="http://schemas.android.com/apk/res-auto"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+    />
+```
+
+`2. ` Configure the _**type**_ and _**placement**_ attributes
+
+```
+    <com.freestar.android.sdk.view.FreestarBannerAd
+       xmlns:custom="http://schemas.android.com/apk/res-auto"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       custom:type="prebid"
+       custom:placement="Freestar_Test_320x50"
+    />
+```
+
+## By Example
+
+The **master** branch contains the basic reference application.  The **freestar-banner-ad** branch has the initialization steps completed, and may act as a reference application for further examples.
 
 [**Reference Application**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master)
 
