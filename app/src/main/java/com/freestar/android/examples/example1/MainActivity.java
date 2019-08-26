@@ -13,8 +13,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.freestar.android.sdk.model.AdEngineType;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.FreestarViewInjector;
+import com.freestar.android.sdk.widget.holder.FreestarAdListener;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
+
+import org.prebid.mobile.PrebidServerAdapter;
+import org.prebid.mobile.TargetingParams;
+import org.prebid.mobile.addendum.AdViewUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String AD_PLACEMENT_TYPE = "articleDetailType";
+    private static final String AD_PLACEMENT = "articleDetailPlacement";
 
     private Button[][] buttons = new Button[3][3];
     private boolean player1Turn = true;
@@ -24,16 +33,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
     private boolean playAds;
+    FreestarAdListener t;
+    FreestarAdModel mm;
+    AdViewUtils avu;
+    com.google.ads.mediation.admob.AdMobAdapter mma;
+    PublisherAdView vv;
+    PrebidServerAdapter psa;
+    private AdEngineType articleDetailType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TargetingParams.setYearOfBirth(1965);
+        TargetingParams.setGender(TargetingParams.GENDER.MALE);
+
         FreestarAdModel.getInstance(this);
 
-        AdEngineType articleDetailType = AdEngineType.valueOf(FreestarAdModel.getInstance(this).getProperty("articleDetailType", AdEngineType.gam.toString()));
-        String adKey = FreestarAdModel.getInstance(this).getProperty("articleDetailPlacement");
+        articleDetailType = AdEngineType.valueOf(FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_TYPE, AdEngineType.gam.toString()));
+        String adKey = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT);
         if (adKey != null) {
             playAds = true;
         } else {
@@ -201,14 +220,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         if (playAds) {
-            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).resumeBannerAds();
+            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).resumeAd(articleDetailType);
         }
     }
 
     @Override
     protected void onPause() {
         if (playAds) {
-            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).pauseBannerAds();
+            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).pauseAd(articleDetailType);
         }
         super.onPause();
     }
@@ -216,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         if (playAds) {
-            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).destroyBannerAds();
+            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).destroyAd(articleDetailType);
             FreestarAdModel.releaseInstance(this);
         }
         super.onDestroy();
