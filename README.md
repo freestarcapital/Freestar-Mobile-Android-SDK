@@ -1,6 +1,6 @@
 ![Freestar](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/freestar.jpg)
 # Freestar Mobile Android SDK Integration Guide
-# API - _freestar-android-sdk_ ***View Injector***
+# API - _freestar-android-sdk_ ***Create Banner View***
 
 ### What's New
 We are pleased to announce the release of our SDK! Banner ad formats are currently supported, with more coming.  Be sure to check-in frequently for the latest releases and announcements.
@@ -8,18 +8,15 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
-| __1.2.0__ | _August 16th, 2019_ |  • Updated to androidx. |
-| __1.1.0__ | _June 21st, 2019_ |  • Support FreestarNews app. |
-| __1.0.0__ | _June 21st, 2019_ |  • Initial release. |
+| __1.0.0__ | _August 26th, 2019_ |  • Initial release. |
 
 ###### Major API Changes
 | Latest |
 | ---- |
-| [ __1.2.0__ ] <br>• Updated the api to latest mopub api and androidx support libraries.<br>|
+| [ __1.2.3__ ] <br>• Updated dependencies to drop remaining android/support classes.  Introduced create view lookup support.<br>|
 
 | Previous |
 | ---- |
-| [ __1.0.0__ ]<br>• Test application support release. |
 
 ###### GMA SDK Compatibility Matrix
 
@@ -40,31 +37,33 @@ com.android.tools.build:gradle 3.4.2
 
 Here are the basic steps required to use the injector your project.
 
-`1. ` Create a _LinearLayout_ tag in your activity layout _.xml_ file.  In our example we are going to give it the id of **ads_layout**.
+`1. ` Add an id to your ad's parent tag in your activity layout _.xml_ file.  In our example we are going to give it the id of **ad_container**.
 
 ```
-    <LinearLayout
-        android:id="@+id/ads_layout"
-        android:layout_width="320dp"
-        android:layout_height="100dp"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/ad_container"
+    tools:context=".MainActivity">
 ```
 
 `2. ` Edit your _assets/freestar_ads.properties_ file and add in your ad specific information (for example it should look something like this)
 
 ```
-articleDetailType=prebid
-articleDetailPlacement=Freestar_Test_320x100
-ads_layout.articleDetailAutoRefresh=120000
+adPlacement=Freestar_Test_320x100
 ```
 
 `3. ` Edit your activity class, in the onCreate() method.
 
 ```
-        AdEngineType articleDetailType = AdEngineType.valueOf(FreestarAdModel.getInstance(this).getProperty("articleDetailType", AdEngineType.gam.toString()));
-        String adKey = FreestarAdModel.getInstance(this).getProperty("articleDetailPlacement");
+    // name match in properties file
+    private static final String AD_PLACEMENT = "articleDetailPlacement";
+    
+    ...
+    
+        String adKey = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT);
         if (adKey != null) {
             playAds = true;
         } else {
@@ -73,11 +72,20 @@ ads_layout.articleDetailAutoRefresh=120000
         }
 
         if (playAds) {
-            ViewGroup adView = findViewById(R.id.ads_layout);
-            FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
-            injector.injectBannerAd(articleDetailType, adView, "ads_layout", adKey);
+            ViewGroup adContainer = findViewById(R.id.ad_container);
+
+            adView = FreestarAdModel.getInstance(this).createBanner(adKey);
+            adContainer.addView(adView);
         }
 
+        if (playAds && adView != null) {
+            final PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
+            PublisherAdRequest adRequest = builder
+//                .addTestDevice("98FA47D6A44364C8F59E90AD4E59A932")
+                    .build();
+            adView.loadAd(adRequest);
+
+        }
 ```
 
 `4. ` Add the following methods to your activity class. 
@@ -87,14 +95,14 @@ ads_layout.articleDetailAutoRefresh=120000
     protected void onResume() {
         super.onResume();
         if (playAds) {
-            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).resumeBannerAds();
+            adView.resume();
         }
     }
 
     @Override
     protected void onPause() {
         if (playAds) {
-            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).pauseBannerAds();
+            adView.pause();
         }
         super.onPause();
     }
@@ -102,11 +110,11 @@ ads_layout.articleDetailAutoRefresh=120000
     @Override
     protected void onDestroy() {
         if (playAds) {
-            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).destroyBannerAds();
-            FreestarAdModel.releaseInstance(this);
+            adView.destroy();
         }
         super.onDestroy();
     }
+
 
 ```
 
