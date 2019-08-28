@@ -1,6 +1,6 @@
 ![Freestar](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/freestar.jpg)
 # Freestar Mobile Android SDK Integration Guide
-# API - _freestar-android-sdk_ main2 installation for lists
+# API - _freestar-android-sdk_ main2 installation for RecyclerView
 
 ### What's New
 We are pleased to announce the release of our SDK! Banner ad formats are currently supported, with more coming.  Be sure to check-in frequently for the latest releases and announcements.
@@ -22,40 +22,69 @@ minSDKVersion 16
 targetSDKVersion 28
 com.android.tools.build:gradle 3.4.2
 
-## Information on Getting Started
+## Getting Started
 ---
 
-To see instructions for different install tips and options, please switch branches:
+Here are the basic steps required to use the SDK with your project.
+
+`1. ` Setup **Freestar** specific properties control file
+
+`  a)` Create _assets_ directory in your _src/main_ directory
+
+`  b)` In the _assets_ directory, create a _freestar_ads.properties_ file
+
+`  c)` Add preliminary entries:
+
+```
+SHARE_GEO_LOCATION=true
+PREBID_FSDATA=http://a.pub.network/app/com.freestar.android.examples/fsdata.json
+PREBID_HOST=https://dev-prebid.pub.network/openrtb2/auction`
+```
+
+`2. ` Add access permissions to your _AndroidManifest.xml_ in the **manifest** tag block
+
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```
+
+`3. ` Add add manager meta-data to your _AndroidManifest.xml_ in the **application** tag block
+
+```
+<meta-data
+  android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+  android:value="true"/>
+  ```
+
+`4. ` Add dependency to your _build.gradle_ (Project) in the **buildscript.dependencies** block
+
+```
+maven {
+  url  "https://dl.bintray.com/freestarmobile/com.freestar.org.prebid"
+}
+```
+
+`5. ` Add dependency to your _build.gradle_ (Module) in the **dependencies** block
+
+```
+api 'com.freestar.org.prebid:freestarSDK:1.2.2'
+```
 
 ## By Example
 
-[**Reference Application**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master)
+The **master** branch contains the basic reference RecyclerView application.  The **freestar-api-install** branch has the initialization steps completed, and may act as a reference application for further examples.
 
-The basic reference application (#1) can be found here.  A very simple, single activity game app.  It was adapted from the example presented by https://www.youtube.com/channel/UC_Fh8kvtkVPkeihBs42jGcA .
+[**Reference Application**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master2)
 
-[**Install Freestar API Branch**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-api-install)
-
-Example of reference application (#1), with the **Freestar** ads api installed and ready for specific advertising options to be implemented.  All advertising examples will be derived by the activities defined by this option (#1-I).
+The basic reference application (#2) can be found here.  A very simple, RecyclerView app.
 
 [**Install2 Freestar API Branch**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-api-install2)
 
 Example of reference application (RecyclerView) (#2), with the **Freestar** ads api installed and ready for specific advertising options to be implemented with .  All advertising examples will be derived by the activities defined by this option (#2-I).
 
-[**Using Freestar Create Banner View**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/create-banner)
-
-Example of reference application (#1-B), using the create banner factory.  This facility returns a PublisherAdView.
-
-[**Using Freestar View Injector**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-view-injector)
-
-Example of reference application (#1-I), with the usage of the **Freestar** view injector.  This facility injects an ad into an existing LayoutView created and named for that purpose.
-
 [**Using FreestarRecycler View Injector**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-recycler-view-injector)
 
 Example of reference application (#2-I), with the usage of the **Freestar** recycler view injector.  This facility injects ads into an existing list, destined for a RecyclerView.
-
-[**Using FreestarBannerAd View**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-banner-ad)
-
-Example of reference application (#1-I), with the usage of the **Freestar** banner ad view.
-
-![**Basic Reference Application #1**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-0.png)
-
