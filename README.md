@@ -1,5 +1,6 @@
 ![Freestar](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/freestar.jpg)
 # Freestar Mobile Android SDK Integration Guide
+# API - _freestar-android-sdk_ main2 installation for lists
 
 ### What's New
 We are pleased to announce the release of our SDK! Banner ad formats are currently supported, with more coming.  Be sure to check-in frequently for the latest releases and announcements.
@@ -7,17 +8,13 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
-| __1.0.1__ | _August 28th, 2019_ |  • freestar API to 1.2.3. |
-| __1.0.0__ | _August 16th, 2019_ |  • Initial release. |
+| __1.0.0__ | _August 28th, 2019_ |  • Initial release. |
 
 ###### GMA SDK Compatibility Matrix
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
 | ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
-| <= 1.0.0 [EOL]| 17.1.3 | FS-1.0.6 | com.freestar.org.prebid:API1.0 : jcenter() |
 
 ---
 #### Minimum Requirements
