@@ -83,7 +83,7 @@ maven {
 `5. ` Add dependency to your _build.gradle_ (Module) in the **dependencies** block
 
 ```
-api 'com.freestar.org.prebid:freestarSDK:1.1.0'
+api 'com.freestar.org.prebid:freestarSDK:1.2.2'
 ```
 
 ## By Example
