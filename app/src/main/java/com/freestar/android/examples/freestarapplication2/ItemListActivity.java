@@ -9,16 +9,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.freestar.android.examples.freestarapplication2.dummy.DummyContent;
+import com.freestar.android.sdk.domain.AdContentItem;
+import com.freestar.android.sdk.domain.ContentItem;
+import com.freestar.android.sdk.domain.CustomTargetingEntry;
+import com.freestar.android.sdk.model.FreestarAdModel;
+import com.freestar.android.sdk.model.FreestarRecyclerViewInjector;
+import com.freestar.android.sdk.widget.holder.ItemViewHolder;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.freestar.android.examples.freestarapplication2.dummy.DummyContent;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,39 +79,47 @@ public class ItemListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+        List<ContentItem> items = new ArrayList<>();
+        items.addAll(DummyContent.ITEMS);
+        FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_list);
+        String adSlot1 = FreestarAdModel.getInstance(this).getProperty("adType2");
+        List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", adSlot1);
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
     }
 
     public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+            extends RecyclerView.Adapter<ItemViewHolder> {
 
         private final ItemListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<ContentItem> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
-                if (mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
-                    ItemDetailFragment fragment = new ItemDetailFragment();
-                    fragment.setArguments(arguments);
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.item_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, ItemDetailActivity.class);
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                Object item = view.getTag();
+                if (item instanceof DummyContent.DummyItem) {
+                    DummyContent.DummyItem dItem = (DummyContent.DummyItem) item;
+                    if (mTwoPane) {
+                        Bundle arguments = new Bundle();
+                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, dItem.id);
+                        ItemDetailFragment fragment = new ItemDetailFragment();
+                        fragment.setArguments(arguments);
+                        mParentActivity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.item_detail_container, fragment)
+                                .commit();
+                    } else {
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, ItemDetailActivity.class);
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, dItem.id);
 
-                    context.startActivity(intent);
+                        context.startActivity(intent);
+                    }
                 }
             }
         };
 
         SimpleItemRecyclerViewAdapter(ItemListActivity parent,
-                                      List<DummyContent.DummyItem> items,
+                                      List<ContentItem> items,
                                       boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
@@ -109,19 +127,52 @@ public class ItemListActivity extends AppCompatActivity {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_list_content, parent, false);
-            return new ViewHolder(view);
+        public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.item_list);
+            ItemViewHolder result = injector.getViewHolder(parent, viewType);
+            if (result == null) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_content, parent, false);
+                result = new DummyViewHolder(view);
+            } else {
+                PublisherAdView v = (PublisherAdView) ((LinearLayout)result.getInitView()).getChildAt(0);
+                System.out.println("Frogs: "+v.getAdListener().getClass().getName());
+            }
+            return result;
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+        public void onBindViewHolder(final ItemViewHolder holder, int position) {
+            ContentItem item = mValues.get(position);
+            if (item instanceof DummyContent.DummyItem) {
+                DummyContent.DummyItem itemD = (DummyContent.DummyItem) item;
+                DummyViewHolder viewHolder = (DummyViewHolder) holder;
+                viewHolder.mIdView.setText(itemD.id);
+                viewHolder.mContentView.setText(itemD.content);
+                holder.itemView.setTag(mValues.get(position));
+                holder.itemView.setOnClickListener(mOnClickListener);
+            } else {
+                AdContentItem adItem = (AdContentItem) item;
+                FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.item_list);
+                injector.setAdListener(holder, new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        // do something
+                    }
 
-            holder.itemView.setTag(mValues.get(position));
-            holder.itemView.setOnClickListener(mOnClickListener);
+                    public void onAdClicked() {
+                        // do something
+                    }
+                });
+
+                //injector.process(holder, adItem);
+
+                injector.process(holder, adItem,
+                        new CustomTargetingEntry.ListBuilder()
+                                .addCustomTargeting("pos", "top")
+                                .addCustomTargeting("s1", "home")
+                                .addCustomTargeting("pid", "home")
+                                .build());
+            }
         }
 
         @Override
@@ -129,15 +180,23 @@ public class ItemListActivity extends AppCompatActivity {
             return mValues.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
+        @Override
+        public int getItemViewType(int position) {
+            ContentItem item = mValues.get(position);
+            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.item_list);
+            return injector.getItemViewType(item);
+        }
+
+        class DummyViewHolder extends ItemViewHolder {
             final TextView mIdView;
             final TextView mContentView;
 
-            ViewHolder(View view) {
+            DummyViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mIdView = view.findViewById(R.id.id_text);
+                mContentView = view.findViewById(R.id.content);
             }
         }
+
     }
 }

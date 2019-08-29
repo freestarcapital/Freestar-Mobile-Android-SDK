@@ -3,6 +3,7 @@ package com.freestar.android.examples.freestarapplication2;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.freestar.android.sdk.model.FreestarAdModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -66,6 +67,31 @@ public class ItemDetailActivity extends AppCompatActivity {
                     .add(R.id.item_detail_container, fragment)
                     .commit();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        if (playAds) {
+//            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_info).resumeBannerAds();
+//        }
+    }
+
+    @Override
+    protected void onPause() {
+//        if (playAds) {
+//            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_info).pauseBannerAds();
+//        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+//        if (playAds) {
+//            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_info).destroyBannerAds();
+//            FreestarAdModel.releaseInstance(this);
+//        }
+        super.onDestroy();
     }
 
     @Override

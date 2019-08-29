@@ -1,5 +1,7 @@
 package com.freestar.android.examples.freestarapplication2.dummy;
 
+import com.freestar.android.sdk.domain.StringContentItem;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +55,7 @@ public class DummyContent {
     /**
      * A dummy item representing a piece of content.
      */
-    public static class DummyItem {
+    public static class DummyItem extends StringContentItem {
         public final String id;
         public final String content;
         public final String details;
@@ -68,5 +70,16 @@ public class DummyContent {
         public String toString() {
             return content;
         }
+
+        @Override
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        public int compareTo(StringContentItem item) {
+            return id.compareTo(item.getId());
+        }
+
     }
 }
