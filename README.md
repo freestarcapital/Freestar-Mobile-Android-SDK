@@ -52,14 +52,14 @@ Here are the basic steps required to use the injector your project.
 `2. ` Edit your _assets/freestar_ads.properties_ file and add in your ad specific information (for example it should look something like this)
 
 ```
-adPlacement=Freestar_Test_320x100
+adPlacement=freestar_androidapp_320x50_ATF
 ```
 
 `3. ` Edit your activity class, in the onCreate() method.
 
 ```
     // name match in properties file
-    private static final String AD_PLACEMENT = "articleDetailPlacement";
+    private static final String AD_PLACEMENT = "adPlacement";
     
     ...
     
