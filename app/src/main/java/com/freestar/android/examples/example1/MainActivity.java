@@ -10,20 +10,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.freestar.android.sdk.model.AdEngineType;
+import com.freestar.android.sdk.domain.CustomTargetingEntry;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.FreestarViewInjector;
-import com.freestar.android.sdk.widget.holder.FreestarAdListener;
-import com.google.android.gms.ads.doubleclick.PublisherAdView;
 
-import org.prebid.mobile.PrebidServerAdapter;
 import org.prebid.mobile.TargetingParams;
-import org.prebid.mobile.addendum.AdViewUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String AD_PLACEMENT_TYPE = "articleDetailType";
-    private static final String AD_PLACEMENT = "articleDetailPlacement";
+    private static final String AD_PLACEMENT = "adPlacement1";
 
     private Button[][] buttons = new Button[3][3];
     private boolean player1Turn = true;
@@ -33,13 +31,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
     private boolean playAds;
-    FreestarAdListener t;
-    FreestarAdModel mm;
-    AdViewUtils avu;
-    com.google.ads.mediation.admob.AdMobAdapter mma;
-    PublisherAdView vv;
-    PrebidServerAdapter psa;
-    private AdEngineType articleDetailType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FreestarAdModel.getInstance(this);
 
-        articleDetailType = AdEngineType.valueOf(FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_TYPE, AdEngineType.gam.toString()));
-        String adKey = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT);
-        if (adKey != null) {
+        String placementName = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT);
+        if (placementName != null) {
             playAds = true;
         } else {
             System.err.println("missing placement for article detail, check configuration properties");
@@ -62,10 +52,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (playAds) {
             ViewGroup adView = findViewById(R.id.ads_layout);
-            // @@@@@@@@@@ Freestar ad activity - fragment
+            List<CustomTargetingEntry> customTargets = new CustomTargetingEntry.ListBuilder()
+                    .addCustomTargeting("fs_app", "true")
+                    .addCustomTargeting("test", "universalsafeframetrue")
+                    .build();
             FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
-            injector.injectBannerAd(articleDetailType, adView, "ads_layout", adKey);
-            // @@@@@@@@@@ Freestar ad activity end - fragment
+            injector.injectBannerAd(adView, "ads_layout", placementName, customTargets);
         }
 
         textViewPlayer1 = findViewById(R.id.text_view_p1);
@@ -220,14 +212,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         if (playAds) {
-            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).resumeAd(articleDetailType);
+            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).resumeAd();
         }
     }
 
     @Override
     protected void onPause() {
         if (playAds) {
-            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).pauseAd(articleDetailType);
+            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).pauseAd();
         }
         super.onPause();
     }
@@ -235,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         if (playAds) {
-            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).destroyAd(articleDetailType);
+            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).destroyAd();
             FreestarAdModel.releaseInstance(this);
         }
         super.onDestroy();
