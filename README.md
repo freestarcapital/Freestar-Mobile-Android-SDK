@@ -53,7 +53,6 @@ Here are the basic steps required to use the **<FreestarBannerAd>** your project
         android:layout_height="wrap_content"
         custom:adSize="320x50"
         custom:adUnitId="/15184186/freestar_androidapp_320x50_ATF"
-        custom:customTargets="mytag1=myvalue1,mytag2=myvalue2"
         />
 ```
 
