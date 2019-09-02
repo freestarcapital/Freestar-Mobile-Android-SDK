@@ -8,6 +8,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.0.2__ | _August 28th, 2019_ |  • use FreestarBannerAd name for stand alone - injectable moved to SimpleBannerAd . |
 | __1.0.1__ | _August 28th, 2019_ |  • freestar API to 1.2.3. |
 | __1.0.0__ | _August 16th, 2019_ |  • Initial release. |
 
@@ -15,10 +16,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
-| ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
-| <= 1.0.0 [EOL]| 17.1.3 | FS-1.0.6 | com.freestar.org.prebid:API1.0 : jcenter() |
+| ~> 1.2.5 | 18.1.1 | FS-1.2.4 | com.google.android.gms:play-services-ads, : jcenter() |
 
 ---
 #### Minimum Requirements
@@ -34,27 +32,124 @@ Here are the basic steps required to use the **<FreestarBannerAd>** your project
 `0. ` Configure using the "basic reference application" instructions
 
 
-`1. ` Add the *<FreestarBannerAd>* tag to your layout activity _xml_file
+`1. ` Add the *<FreestarBannerAd>* tag to your layout activity _xml_file.  
 
 ```
     <com.freestar.android.sdk.view.FreestarBannerAd
-       xmlns:custom="http://schemas.android.com/apk/res-auto"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-    />
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ad_placement1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 ```
 
-`2. ` Configure the _**type**_ and _**placement**_ attributes
+`2. ` Configure the custom entries _**adSize**_ and _**adUnitId**_ and optional _**customTargets**_ attributes
 
 ```
     <com.freestar.android.sdk.view.FreestarBannerAd
-       xmlns:custom="http://schemas.android.com/apk/res-auto"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       custom:type="prebid"
-       custom:placement="Freestar_Test_320x50"
-    />
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ad_placement1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        custom:adSize="320x50"
+        custom:adUnitId="/15184186/freestar_androidapp_320x50_ATF"
+        custom:customTargets="mytag1=myvalue1,mytag2=myvalue2"
+        />
 ```
+
+`3. ` In your **activity** class in the **onCreate()** method, initialize the ad model prior to the content view initialization.
+
+before
+```
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+```
+after
+```
+        super.onCreate(savedInstanceState);
+        FreestarAdModel.getInstance(this);
+        setContentView(R.layout.activity_main);
+```
+
+`4. ` In your **activity** class in the **onCreate()** method, create an optional AdListener if you need one.
+
+```
+        adPlacement1 = findViewById(R.id.ad_placement1);
+        adPlacement1.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int var1) {
+                super.onAdFailedToLoad(var1);
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            /**
+             * Ad displayed on page
+             */
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+            }
+        });
+
+```
+
+`5. ` In your **activity** class in the **onCreate()** method, create a PublisherAdRequest and you can then load an ad.
+
+```
+        PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
+        builder = builder.addCustomTargeting("myTarget3", "myValue3");
+        PublisherAdRequest request = builder.build();
+        adPlacement1.loadAd(request);
+    
+```
+
+`6. ` In your **activity** class create appropriate methods so the ad view can behave appropriately with application lifecycle state changes.
+
+```
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adPlacement1.resume();
+    }
+
+    @Override
+    protected void onPause() {
+        adPlacement1.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        adPlacement1.destroy();
+        super.onDestroy();
+    }
+    
+```
+
 
 ## By Example
 

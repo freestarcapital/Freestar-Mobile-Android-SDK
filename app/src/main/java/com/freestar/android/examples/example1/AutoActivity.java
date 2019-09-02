@@ -1,24 +1,23 @@
 package com.freestar.android.examples.example1;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.TargetingModel;
-import com.freestar.android.sdk.view.FreestarBannerAd;
+import com.freestar.android.sdk.view.FreestarAutoBannerAd;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 
 import org.prebid.mobile.PrebidMobile;
 import org.prebid.mobile.PrebidServerAdapter;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class AutoActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button[][] buttons = new Button[3][3];
     private boolean player1Turn = true;
@@ -29,9 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewPlayer2;
     TargetingModel model;
     PrebidServerAdapter psa;
-    private FreestarBannerAd adPlacement1;
+    private FreestarAutoBannerAd adPlacement1;
 
-    public MainActivity() {
+    public AutoActivity() {
         PrebidMobile.addInjectableDemandKeyword("fs_app", "true");
         PrebidMobile.addInjectableDemandKeyword("test", "universalsafeframetrue");
     }
@@ -101,12 +100,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.onAdImpression();
             }
         });
-
-        PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
-        builder = builder.addCustomTargeting("myTarget3", "myValue3");
-        PublisherAdRequest request = builder.build();
-        adPlacement1.loadAd(request);
-        //adPlacement1.loadAd(request, 60000);
 
     }
 

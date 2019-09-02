@@ -41,7 +41,7 @@
             android:layout_marginRight="33dp"
             android:text="reset" />
     </RelativeLayout>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -129,13 +129,14 @@
             android:freezesText="true"
             />
     </LinearLayout>
-    <com.freestar.android.sdk.view.FreestarBannerAd
+    <com.freestar.android.sdk.view.FreestarAutoBannerAd
         xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ad_placement1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         custom:adSize="320x50"
         custom:adUnitId="/15184186/freestar_androidapp_320x50_ATF"
+        custom:customTargets="mytag1=myvalue1,mytag2=myvalue2"
         />
         <!--
         custom:adSize="320x50"
