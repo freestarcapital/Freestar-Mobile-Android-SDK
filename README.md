@@ -168,7 +168,7 @@ Example of reference application (#1), with the **Freestar** ads api installed a
 
 Example of reference application (RecyclerView) (#2), with the **Freestar** ads api installed and ready for specific advertising options to be implemented with .  All advertising examples will be derived by the activities defined by this option (#2-I).
 
-[**Using Freestar Create Banner View**](https://github.comfreestarcapital/Freestar-Mobile-Android-SDK/new/create-banner)
+[**Using Freestar Create Banner View**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/create-banner)
 
 Example of reference application (#1-B), using the create banner factory.  This facility returns a PublisherAdView.
 
@@ -176,7 +176,7 @@ Example of reference application (#1-B), using the create banner factory.  This 
 
 Example of reference application (#1-I), with the usage of the **Freestar** view injector.  This facility injects an ad into an existing LayoutView created and named for that purpose.
 
-[**Using FreestarRecycler View Injector**](https://github.comfreestarcapital/Freestar-Mobile-Android-SDK/new/freestar-recycler-view-injector)
+[**Using FreestarRecycler View Injector**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-recycler-view-injector)
 
 Example of reference application (#2-I), with the usage of the **Freestar** recycler view injector.  This facility injects ads into an existing list, destined for a RecyclerView.
 
