@@ -18,7 +18,8 @@ import org.prebid.mobile.TargetingParams;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String AD_PLACEMENT = "adPlacement";
+    private static final String AD_PLACEMENT1 = "adPlacement1";
+    private static final String AD_PLACEMENT2 = "adPlacement2";
 
     private Button[][] buttons = new Button[3][3];
     private boolean player1Turn = true;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FreestarAdModel.getInstance(this);
 
-        String adKey = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT);
+        String adKey = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT1);
         if (adKey != null) {
             playAds = true;
         } else {

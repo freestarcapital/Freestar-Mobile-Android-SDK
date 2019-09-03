@@ -8,21 +8,16 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.0.1__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
 | __1.0.0__ | _August 26th, 2019_ |  • Initial release. |
-
-###### Major API Changes
-| Latest |
-| ---- |
-| [ __1.2.3__ ] <br>• Updated dependencies to drop remaining android/support classes.  Introduced create view lookup support.<br>|
-
-| Previous |
-| ---- |
 
 ###### GMA SDK Compatibility Matrix
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
-| ~> 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
+| ~> 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
+| ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
+| = 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
 | = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
 | <= 1.0.0 [EOL]| 17.1.3 | FS-1.0.6 | com.freestar.org.prebid:API1.0 : jcenter() |
 
@@ -35,7 +30,7 @@ com.android.tools.build:gradle 3.4.2
 ## Getting Started
 ---
 
-Here are the basic steps required to use the injector your project.
+Here are the basic steps required to use the create banner.
 
 `1. ` Add an id to your ad's parent tag in your activity layout _.xml_ file.  In our example we are going to give it the id of **ad_container**.
 
@@ -122,17 +117,17 @@ adPlacement=freestar_androidapp_320x50_ATF
 
 The **master** branch contains the basic reference application.  The **freestar-api-install** branch has the initialization steps completed, and may act as a reference application for further examples.
 
-[**Reference Application**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master)
+[**Reference Application #1**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/master)
 
 ![**Basic Reference Application #1**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-0.png)
 
 The basic reference application (#1) can be found here.  A very simple, single activity game app.  It was adapted from the example presented by https://www.youtube.com/channel/UC_Fh8kvtkVPkeihBs42jGcA .
 
-[**Install Freestar API Branch**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-api-install)
+[**Install Freestar API Branch**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-api-install)
 
 Example of reference application #1, with the **Freestar** ads api installed and ready for specific advertising options to be implemented.  All advertising examaples will be derived by the activities defined by this option.
 
-[**Using FreestarBannerAd View**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-banner-ad)
+[**Using FreestarBannerAd View**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-banner-ad)
 
 Example of using the <FreestarBannerAd> tag within your _activity_ layout _xml_ files.
 
