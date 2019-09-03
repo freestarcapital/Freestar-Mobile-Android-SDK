@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.freestar.android.examples.freestarapplication2.dummy.DummyContent;
 import com.freestar.android.sdk.domain.AdContentItem;
 import com.freestar.android.sdk.domain.ContentItem;
-import com.freestar.android.sdk.domain.CustomTargetingEntry;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.FreestarRecyclerViewInjector;
 import com.freestar.android.sdk.widget.holder.ItemViewHolder;
@@ -27,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.prebid.fs.mobile.domain.CustomTargetingEntry;
 
 import java.util.ArrayList;
 import java.util.List;
