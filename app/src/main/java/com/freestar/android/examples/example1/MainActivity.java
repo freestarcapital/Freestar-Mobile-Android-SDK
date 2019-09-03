@@ -10,13 +10,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.freestar.android.sdk.domain.CustomTargetingEntry;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.FreestarViewInjector;
 
+import org.prebid.fs.mobile.domain.CustomTargetingEntry;
 import org.prebid.mobile.TargetingParams;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -53,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (playAds) {
             ViewGroup adView = findViewById(R.id.ads_layout);
             List<CustomTargetingEntry> customTargets = new CustomTargetingEntry.ListBuilder()
-                    .addCustomTargeting("fs_app", "true")
-                    .addCustomTargeting("test", "universalsafeframetrue")
+                    .addCustomTargeting("custom1", "value2")
+                    .addCustomTargeting("custom2", "value1")
                     .build();
             FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
             injector.injectBannerAd(adView, "ads_layout", placementName, customTargets);
