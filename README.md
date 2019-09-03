@@ -15,6 +15,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
+| ~> 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
 
 ---
@@ -78,7 +79,7 @@ api 'com.freestar.org.prebid:freestarSDK:1.2.5'
 
 The **master** branch contains the basic reference RecyclerView application.  The **freestar-api-install** branch has the initialization steps completed, and may act as a reference application for further examples.
 
-[**Reference Application**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/master2)
+[**Reference Application**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/master2)
 
 The basic reference application (#2) can be found here.  A very simple, RecyclerView app.
 
@@ -86,6 +87,6 @@ The basic reference application (#2) can be found here.  A very simple, Recycler
 
 Example of reference application (RecyclerView) (#2), with the **Freestar** ads api installed and ready for specific advertising options to be implemented with .  All advertising examples will be derived by the activities defined by this option (#2-I).
 
-[**Using FreestarRecycler View Injector**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-recycler-view-injector)
+[**Using FreestarRecycler View Injector**](https://github.com/reestarcapital/Freestar-Mobile-Android-SDK/new/freestar-recycler-view-injector)
 
 Example of reference application (#2-I), with the usage of the **Freestar** recycler view injector.  This facility injects ads into an existing list, destined for a RecyclerView.
