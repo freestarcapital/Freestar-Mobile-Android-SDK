@@ -8,6 +8,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.0.1__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
 | __1.0.0__ | _August 28th, 2019_ |  • Initial release. |
 
 ###### GMA SDK Compatibility Matrix
@@ -37,18 +38,18 @@ Here are the basic steps required to use the SDK with your project.
 
 ```
 SHARE_GEO_LOCATION=true
-PREBID_FSDATA=http://a.pub.network/app/com.freestar.android.examples/fsdata.json
-PREBID_HOST=https://dev-prebid.pub.network/openrtb2/auction`
+PREBID_FSDATA_ID=com.freestar.android.examples
+#USE_PREBID_DEV_HOST=true
 ```
 
 `2. ` Add access permissions to your _AndroidManifest.xml_ in the **manifest** tag block
 
 ```
-<uses-permission android:name="android.permission.INTERNET"/>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.INTERNET"/>`
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>`
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>`
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />`
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />`
 ```
 
 `3. ` Add add manager meta-data to your _AndroidManifest.xml_ in the **application** tag block
@@ -59,7 +60,7 @@ PREBID_HOST=https://dev-prebid.pub.network/openrtb2/auction`
   android:value="true"/>
   ```
 
-`4. ` Add dependency to your _build.gradle_ (Project) in the **buildscript.dependencies** block
+`4. ` Add dependency to your _build.gradle_ (Project) in the **allprojects.repositories** block
 
 ```
 maven {
@@ -70,7 +71,7 @@ maven {
 `5. ` Add dependency to your _build.gradle_ (Module) in the **dependencies** block
 
 ```
-api 'com.freestar.org.prebid:freestarSDK:1.2.2'
+api 'com.freestar.org.prebid:freestarSDK:1.2.5'
 ```
 
 ## By Example
