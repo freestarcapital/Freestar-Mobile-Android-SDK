@@ -87,6 +87,6 @@ The basic reference application (#2) can be found here.  A very simple, Recycler
 
 Example of reference application (RecyclerView) (#2), with the **Freestar** ads api installed and ready for specific advertising options to be implemented with .  All advertising examples will be derived by the activities defined by this option (#2-I).
 
-[**Using FreestarRecycler View Injector**](https://github.com/reestarcapital/Freestar-Mobile-Android-SDK/new/freestar-recycler-view-injector)
+[**Using FreestarRecycler View Injector**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-recycler-view-injector)
 
 Example of reference application (#2-I), with the usage of the **Freestar** recycler view injector.  This facility injects ads into an existing list, destined for a RecyclerView.
