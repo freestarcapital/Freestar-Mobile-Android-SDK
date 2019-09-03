@@ -83,7 +83,7 @@ The **master** branch contains the basic reference RecyclerView application.  Th
 
 The basic reference application (#2) can be found here.  A very simple, RecyclerView app.
 
-[**Install2 Freestar API Branch**](https://freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-api-install2)
+[**Install2 Freestar API Branch**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/freestar-api-install2)
 
 Example of reference application (RecyclerView) (#2), with the **Freestar** ads api installed and ready for specific advertising options to be implemented with .  All advertising examples will be derived by the activities defined by this option (#2-I).
 
