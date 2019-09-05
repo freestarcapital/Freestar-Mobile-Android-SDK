@@ -8,7 +8,8 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
-| __1.0.1__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
+| __1.0.3__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
+| __1.0.2__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
 | __1.0.1__ | _August 28th, 2019_ |  • freestar API to 1.2.3. |
 | __1.0.0__ | _August 16th, 2019_ |  • Initial release. |
 
@@ -16,7 +17,8 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
-| ~> 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
+| ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
+| = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
 | = 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
 | = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
@@ -42,7 +44,7 @@ Here are the basic steps required to use the SDK with your project.
 `  c)` Add preliminary entries:
 
 ```
-SHARE_GEO_LOCATION=true
+#SHARE_GEO_LOCATION=true
 PREBID_FSDATA_ID=com.freestar.android.examples
 #USE_PREBID_DEV_HOST=true
 ```
@@ -51,10 +53,10 @@ PREBID_FSDATA_ID=com.freestar.android.examples
 
 ```
 <uses-permission android:name="android.permission.INTERNET"/>`
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>`
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>`
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />`
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />`
+<!--
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+-->
 ```
 
 `3. ` Add add manager meta-data to your _AndroidManifest.xml_ in the **application** tag block
@@ -76,7 +78,7 @@ maven {
 `5. ` Add dependency to your _build.gradle_ (Module) in the **dependencies** block
 
 ```
-api 'com.freestar.org.prebid:freestarSDK:1.2.5'
+api 'com.freestar.org.prebid:freestarSDK:1.2.6'
 ```
 
 ## By Example
