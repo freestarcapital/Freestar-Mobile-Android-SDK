@@ -42,6 +42,8 @@ import java.util.List;
  */
 public class ItemListActivity extends AppCompatActivity {
 
+    private static final String AD_PLACEMENT_1 = "adPlacement1";
+    private static final String AD_PLACEMENT_2 = "adPlacement2";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -83,7 +85,7 @@ public class ItemListActivity extends AppCompatActivity {
         List<ContentItem> items = new ArrayList<>();
         items.addAll(DummyContent.ITEMS);
         FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_list);
-        String adSlot1 = FreestarAdModel.getInstance(this).getProperty("adType2");
+        String adSlot1 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_2);
         List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", adSlot1);
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
     }

@@ -8,6 +8,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.0.2__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
 | __1.0.1__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
 | __1.0.0__ | _August 28th, 2019_ |  • Initial release. |
 
@@ -15,8 +16,9 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
-| ~> 1.2.5 | 18.1.1 | FS-1.2.4 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.2.4 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
+| ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
+| = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
+| ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
 
 ---
 #### Minimum Requirements
@@ -32,13 +34,13 @@ Here are the basic steps required to use the injector your project.
 `1. ` Edit your _assets/freestar_ads.properties_ file and add in your ad specific information (for example it should look something like this)
 
 ```
-SHARE_GEO_LOCATION=true
+#SHARE_GEO_LOCATION=true
 
 PREBID_FSDATA_ID=com.freestar.android.examples
-USE_PREBID_DEV_HOST=true
+#USE_PREBID_DEV_HOST=true
 
-adType1=freestar_androidapp_320x50_ATF
-adType2=Freestar_Test_300x250
+adPlacement1=freestar_androidapp_320x50_ATF
+adPlacement2=freestar_androidapp_300x250_InContent
 
 # the number of items between ad injections
 item_list.listInjectOffsetCount=3
@@ -110,7 +112,7 @@ import com.freestar.android.sdk.domain.StringContentItem;
     }
 ```
 
-`x. ` In your activity, modify the setupRecyclerView() method.
+`3. ` In your activity, modify the setupRecyclerView() method.
 
 before
 ```
@@ -126,7 +128,7 @@ after
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
 ```
 
-`x. ` In your activity, change the SimpleItemRecyclerViewAdapter.
+`4. ` In your activity, change the SimpleItemRecyclerViewAdapter.
 
 before
 ```
@@ -211,7 +213,7 @@ after
 
 ```
 
-`x. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter with the onCreateViewHolder() method.
+`5. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter with the onCreateViewHolder() method.
 
 before
 ```
@@ -238,7 +240,7 @@ after
         }
 ```
 
-`x. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter with the onBindViewHolder() method.
+`6. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter with the onBindViewHolder() method.
 
 before
 ```
@@ -287,7 +289,7 @@ after
         }
 ```
 
-`x. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter add a getItemViewType() method.
+`7. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter add a getItemViewType() method.
 
 ```
         @Override
@@ -298,7 +300,7 @@ after
         }
 ```
 
-`x. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter - change the DummyViewHolder.
+`8. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter - change the DummyViewHolder.
 
 before
 ```
