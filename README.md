@@ -149,6 +149,13 @@ after
     
 ```
 
+`7. ` In **freestar_ads.properties** you **may** add properties to set the auto refresh rates for your FreestarBannerAds (in seconds) to override the backend supplied value.  Notice the root of the tag matches the entries in your layout xml file.
+
+```
+ad_placement1.autoRefreshSeconds=38
+ad_placement2.autoRefreshSeconds=39
+```
+
 
 ## By Example
 

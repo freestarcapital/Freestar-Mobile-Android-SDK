@@ -15,8 +15,9 @@ import com.freestar.android.sdk.view.FreestarBannerAd;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 
-import org.prebid.mobile.PrebidMobile;
 import org.prebid.mobile.PrebidServerAdapter;
+import org.prebid.mobile.addendum.AdViewUtils;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,10 +31,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TargetingModel model;
     PrebidServerAdapter psa;
     private FreestarBannerAd adPlacement1;
+    AdViewUtils uul;
 
     public MainActivity() {
-        PrebidMobile.addInjectableDemandKeyword("fs_app", "true");
-        PrebidMobile.addInjectableDemandKeyword("test", "universalsafeframetrue");
+        // These entries are special purpose - Your Freestar representative will provide instructions
+        // if you need to use a combination of these.
+//        PrebidMobile.addInjectableDemandKeyword("fs_app", "true");
+//        PrebidMobile.addInjectableDemandKeyword("test", "universalsafeframetrue");
     }
 
     @Override
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder = builder.addCustomTargeting("myTarget3", "myValue3");
         PublisherAdRequest request = builder.build();
         adPlacement1.loadAd(request);
-        //adPlacement1.loadAd(request, 60000);
+        //adPlacement1.loadAd(request, 35000);
 
     }
 
