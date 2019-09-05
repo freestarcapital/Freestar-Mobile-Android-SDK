@@ -8,6 +8,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.0.3__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
 | __1.0.2__ | _August 28th, 2019_ |  • use FreestarBannerAd name for stand alone - injectable moved to SimpleBannerAd . |
 | __1.0.1__ | _August 28th, 2019_ |  • freestar API to 1.2.3. |
 | __1.0.0__ | _August 16th, 2019_ |  • Initial release. |
@@ -43,7 +44,7 @@ Here are the basic steps required to use the **<FreestarBannerAd>** your project
         />
 ```
 
-`2. ` Configure the custom entries _**adSize**_ and _**adUnitId**_ and optional _**customTargets**_ attributes
+`2. ` Configure the custom entries _**adSize**_ and _**adUnitId**_ and optional _**customTargets**_ attributes.
 
 ```
     <com.freestar.android.sdk.view.FreestarBannerAd
@@ -123,6 +124,9 @@ after
         builder = builder.addCustomTargeting("myTarget3", "myValue3");
         PublisherAdRequest request = builder.build();
         adPlacement1.loadAd(request);
+        // Override for settings read from "PREBID_FSDATA".  Also see #7 below.
+        //adPlacement1.loadAd(request, 35000);
+
     
 ```
 
@@ -152,8 +156,9 @@ after
 `7. ` In **freestar_ads.properties** you **may** add properties to set the auto refresh rates for your FreestarBannerAds (in seconds) to override the backend supplied value.  Notice the root of the tag matches the entries in your layout xml file.
 
 ```
+// Override for settings read from "PREBID_FSDATA".  Also see #5 above.
 ad_placement1.autoRefreshSeconds=38
-ad_placement2.autoRefreshSeconds=39
+#ad_placement2.autoRefreshSeconds=39
 ```
 
 
