@@ -8,6 +8,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.0.3__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
 | __1.0.2__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
 | __1.0.1__ | _August 28th, 2019_ |  • freestar API to 1.2.3. |
 | __1.0.0__ | _August 16th, 2019_ |  • Initial release. |
@@ -16,7 +17,8 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
-| ~> 1.2.5 | 18.1.1 | FS-1.2.4 | com.google.android.gms:play-services-ads, : jcenter() |
+| ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
+| = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
 | = 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
 | = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
@@ -50,8 +52,7 @@ Here are the basic steps required to use the injector your project.
 ```
 adPlacement1=freestar_androidapp_320x50_ATF
 adPlacement2=freestar_androidapp_300x250_InContent
-
-#ads_layout.articleDetailAutoRefresh=120000
+#ads_layout.articleDetailAutoRefresh=38
 ```
 
 `3. ` Edit your activity class, in the onCreate() method.
