@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.FreestarViewInjector;
+import com.freestar.android.sdk.model.domain.AdPlacement;
 
 import org.prebid.fs.mobile.domain.CustomTargetingEntry;
 import org.prebid.mobile.TargetingParams;
@@ -20,7 +21,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String AD_PLACEMENT = "adPlacement1";
+    private static final String AD_PLACEMENT1 = "adPlacement1";
+    private static final String AD_PLACEMENT2 = "adPlacement2";
+    private static final String DFP_PLACEMENT1 = "dfpPlacement1";
+    private static final String DFP_PLACEMENT2 = "dfpPlacement2";
+    private static final String DFP_SIZE1 = "dfpSize1";
+    private static final String DFP_SIZE2 = "dfpSize2";
 
     private Button[][] buttons = new Button[3][3];
     private boolean player1Turn = true;
@@ -29,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int player2Points;
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
-    private boolean playAds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,22 +46,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FreestarAdModel.getInstance(this);
 
-        String placementName = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT);
-        if (placementName != null) {
-            playAds = true;
+        ViewGroup adView = findViewById(R.id.ads_layout);
+        List<CustomTargetingEntry> customTargets = new CustomTargetingEntry.ListBuilder()
+                .addCustomTargeting("custom1", "value2")
+                .addCustomTargeting("custom2", "value1")
+                .build();
+        FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
+
+        String placementName1 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT1);
+        String placementName2 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT2);
+        String dfpName1 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT1);
+        String dfpName2 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT2);
+        if (placementName1 != null) {
+            injector.injectBannerAd(adView, "ads_layout", placementName1, customTargets);
+        } else if (placementName2 != null) {
+            injector.injectBannerAd(adView, "ads_layout", placementName2, customTargets);
+        } else if (dfpName1 != null) {
+            String dfpSize = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE1);
+            injector.injectBannerAdByDfp(adView, "ads_layout", dfpName1, dfpSize, customTargets);
+        } else if (dfpName2 != null) {
+            String dfpSize = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE2);
+            injector.injectBannerAdByDfp(adView, "ads_layout", dfpName2, dfpSize, customTargets);
         } else {
             System.err.println("missing placement for article detail, check configuration properties");
-            playAds = false;
-        }
-
-        if (playAds) {
-            ViewGroup adView = findViewById(R.id.ads_layout);
-            List<CustomTargetingEntry> customTargets = new CustomTargetingEntry.ListBuilder()
-                    .addCustomTargeting("custom1", "value2")
-                    .addCustomTargeting("custom2", "value1")
-                    .build();
-            FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
-            injector.injectBannerAd(adView, "ads_layout", placementName, customTargets);
         }
 
         textViewPlayer1 = findViewById(R.id.text_view_p1);
@@ -210,25 +222,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (playAds) {
-            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).resumeAd();
-        }
+        FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).resumeAd();
     }
 
     @Override
     protected void onPause() {
-        if (playAds) {
-            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).pauseAd();
-        }
+        FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).pauseAd();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (playAds) {
-            FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).destroyAd();
-            FreestarAdModel.releaseInstance(this);
-        }
+        FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).destroyAd();
+        FreestarAdModel.releaseInstance(this);
         super.onDestroy();
     }
 
