@@ -44,6 +44,10 @@ public class ItemListActivity extends AppCompatActivity {
 
     private static final String AD_PLACEMENT_1 = "adPlacement1";
     private static final String AD_PLACEMENT_2 = "adPlacement2";
+    private static final String DFP_PLACEMENT_1 = "dfpPlacement1";
+    private static final String DFP_PLACEMENT_2 = "dfpPlacement2";
+    private static final String DFP_SIZE_1 = "dfpSize1";
+    private static final String DFP_SIZE_2 = "dfpSize2";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -85,8 +89,15 @@ public class ItemListActivity extends AppCompatActivity {
         List<ContentItem> items = new ArrayList<>();
         items.addAll(DummyContent.ITEMS);
         FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_list);
-        String adSlot1 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_2);
+        String adSlot1 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_1);
+        String adSlot2 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_2);
+        String dfpSlot1 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT_1);
+        String dfpSlot2 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT_2);
+        String dfpSize1 = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE_1);
+        String dfpSize2 = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE_2);
+
         List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", adSlot1);
+        //List<ContentItem> masterItems = injector.injectBannerAdByDfp(items, "item_list", dfpSlot1, dfpSize1);
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
     }
 
@@ -138,7 +149,7 @@ public class ItemListActivity extends AppCompatActivity {
                 result = new DummyViewHolder(view);
             } else {
                 PublisherAdView v = (PublisherAdView) ((LinearLayout)result.getInitView()).getChildAt(0);
-                System.out.println("Frogs: "+v.getAdListener().getClass().getName());
+                System.out.println("PAV: "+v.getAdUnitId());
             }
             return result;
         }
@@ -201,5 +212,23 @@ public class ItemListActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_list).resumeBannerAds();
+    }
+
+    @Override
+    protected void onPause() {
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_list).pauseBannerAds();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_list).destroyBannerAds();
+        super.onDestroy();
     }
 }
