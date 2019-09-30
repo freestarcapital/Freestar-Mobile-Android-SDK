@@ -12,11 +12,9 @@ import android.widget.Toast;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.TargetingModel;
 import com.freestar.android.sdk.view.FreestarBannerAd;
+import com.freestar.android.sdk.widget.holder.FreestarAdListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
-
-import org.prebid.mobile.PrebidServerAdapter;
-import org.prebid.mobile.addendum.AdViewUtils;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -28,16 +26,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int player2Points;
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
-    TargetingModel model;
-    PrebidServerAdapter psa;
     private FreestarBannerAd adPlacement1;
-    AdViewUtils uul;
 
     public MainActivity() {
         // These entries are special purpose - Your Freestar representative will provide instructions
         // if you need to use a combination of these.
-//        PrebidMobile.addInjectableDemandKeyword("fs_app", "true");
-//        PrebidMobile.addInjectableDemandKeyword("test", "universalsafeframetrue");
+//        TargetingModel.addInjectableDemandKeyword("fs_app", "true");
+//        TargetingModel.addInjectableDemandKeyword("test", "universalsafeframetrue");
     }
 
     @Override

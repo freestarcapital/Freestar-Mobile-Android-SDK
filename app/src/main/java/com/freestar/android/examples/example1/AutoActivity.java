@@ -14,9 +14,6 @@ import com.freestar.android.sdk.model.TargetingModel;
 import com.freestar.android.sdk.view.FreestarAutoBannerAd;
 import com.google.android.gms.ads.AdListener;
 
-import org.prebid.mobile.PrebidMobile;
-import org.prebid.mobile.PrebidServerAdapter;
-
 public class AutoActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button[][] buttons = new Button[3][3];
@@ -27,12 +24,11 @@ public class AutoActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
     TargetingModel model;
-    PrebidServerAdapter psa;
     private FreestarAutoBannerAd adPlacement1;
 
     public AutoActivity() {
-        PrebidMobile.addInjectableDemandKeyword("fs_app", "true");
-        PrebidMobile.addInjectableDemandKeyword("test", "universalsafeframetrue");
+        TargetingModel.addInjectableDemandKeyword("fs_app", "true");
+        TargetingModel.addInjectableDemandKeyword("test", "universalsafeframetrue");
     }
 
     @Override
