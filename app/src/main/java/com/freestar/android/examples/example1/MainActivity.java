@@ -10,15 +10,37 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.freestar.android.sdk.adslot.DfpAdSlot;
+import com.freestar.android.sdk.adslot.FreestarAdSlot;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
 
-import org.prebid.mobile.TargetingParams;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String AD_PLACEMENT1 = "adPlacement1";
+    private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
+            .setPlacementId("freestar_androidapp_320x50_ATF")
+            .build();
+
+    /*
+    private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
+            .setPlacementId("freestar_androidapp_300x250_InContent")
+            .build();
+
+    private static final DfpAdSlot adSlot = new DfpAdSlot.Builder()
+            .setDfpPlacementId("/15184186/freestar_androidapp_320x50_ATF")
+            .addSize(320, 50)
+            .setAutoRefreshSeconds(30)
+            .build();
+
+    private static final DfpAdSlot adSlot = new DfpAdSlot.Builder()
+            .setDfpPlacementId("/15184186/freestar_androidapp_300x250_InContent")
+            .addSize(300, 250)
+            .setAutoRefreshSeconds(30)
+            .build();
+            */
+
+    private static final String AD_PLACEMENT1x = "adPlacement1";
     private static final String AD_PLACEMENT2 = "adPlacement2";
 
     private Button[][] buttons = new Button[3][3];
@@ -29,39 +51,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
     private PublisherAdView adView;
-    private boolean playAds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FreestarAdModel.getInstance(this);
         setContentView(R.layout.activity_main);
 
-        TargetingParams.setYearOfBirth(1965);
-        TargetingParams.setGender(TargetingParams.GENDER.MALE);
+        ViewGroup adContainer = findViewById(R.id.ad_container);
+        adView = FreestarAdModel.getInstance(this).createBanner(adContainer, adSlot);
 
-        FreestarAdModel.getInstance(this);
-
-        String adKey = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT1);
-        if (adKey != null) {
-            playAds = true;
-        } else {
-            System.err.println("missing placement for article detail, check configuration properties");
-            playAds = false;
-        }
-
-        if (playAds) {
-            ViewGroup adContainer = findViewById(R.id.ad_container);
-            adView = FreestarAdModel.getInstance(this).createBanner(adKey);
-            adContainer.addView(adView);
-        }
-
-        if (playAds && adView != null) {
-            final PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
-            PublisherAdRequest adRequest = builder
+        final PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
+        PublisherAdRequest adRequest = builder
 //                .addTestDevice("98FA47D6A44364C8F59E90AD4E59A932")
-                    .build();
-            adView.loadAd(adRequest);
-        }
+                .build();
+        adView.loadAd(adRequest);
 
         textViewPlayer1 = findViewById(R.id.text_view_p1);
         textViewPlayer2 = findViewById(R.id.text_view_p2);
@@ -214,14 +218,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (playAds) {
+        if (adView != null) {
             adView.resume();
         }
     }
 
     @Override
     protected void onPause() {
-        if (playAds) {
+        if (adView != null) {
             adView.pause();
         }
         super.onPause();
@@ -229,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onDestroy() {
-        if (playAds) {
+        if (adView != null) {
             adView.destroy();
         }
         super.onDestroy();
