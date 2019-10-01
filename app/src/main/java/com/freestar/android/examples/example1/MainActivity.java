@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.TargetingModel;
 import com.freestar.android.sdk.view.FreestarBannerAd;
-import com.freestar.android.sdk.widget.holder.FreestarAdListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 
@@ -31,8 +30,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public MainActivity() {
         // These entries are special purpose - Your Freestar representative will provide instructions
         // if you need to use a combination of these.
-//        TargetingModel.addInjectableDemandKeyword("fs_app", "true");
-//        TargetingModel.addInjectableDemandKeyword("test", "universalsafeframetrue");
+        //TargetingModel.addInjectableDemandKeyword("fs_app", "true");
+        //TargetingModel.addInjectableDemandKeyword("test", "universalsafeframetrue");
     }
 
     @Override
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
         builder = builder.addCustomTargeting("myTarget3", "myValue3");
         PublisherAdRequest request = builder.build();
-        adPlacement1.loadAd(request);
+        adPlacement1.loadAdX(request);
         //adPlacement1.loadAd(request, 35000);
 
     }
