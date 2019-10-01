@@ -10,23 +10,52 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.freestar.android.sdk.adslot.DfpAdSlot;
+import com.freestar.android.sdk.adslot.FreestarAdSlot;
+import com.freestar.android.sdk.domain.CustomTargetingEntry;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.FreestarViewInjector;
-import com.freestar.android.sdk.model.domain.AdPlacement;
 
-import org.prebid.fs.mobile.domain.CustomTargetingEntry;
-import org.prebid.mobile.TargetingParams;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String AD_PLACEMENT1 = "adPlacement1";
-    private static final String AD_PLACEMENT2 = "adPlacement2";
-    private static final String DFP_PLACEMENT1 = "dfpPlacement1";
-    private static final String DFP_PLACEMENT2 = "dfpPlacement2";
-    private static final String DFP_SIZE1 = "dfpSize1";
-    private static final String DFP_SIZE2 = "dfpSize2";
+    /*
+    private static FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
+            .setPlacementId("freestar_androidapp_320x50_ATF")
+                .addCustomTarget("custom1", "value2")
+                .addCustomTarget("custom2", "value1")
+                .setAutoRefreshSeconds(38)
+                .build();
+     */
+    /*
+    private static FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
+            .setPlacementId("freestar_androidapp_300x250_InContent")
+                .addCustomTarget("custom1", "value2")
+                .addCustomTarget("custom2", "value1")
+                .setAutoRefreshSeconds(38)
+                .build();
+     */
+
+    private static DfpAdSlot adSlot = new DfpAdSlot.Builder()
+            .setDfpPlacementId("/15184186/freestar_androidapp_320x50_ATF")
+            .addSize(320, 50)
+            .addCustomTarget("custom1", "value2")
+            .addCustomTarget("custom2", "value1")
+            .setAutoRefreshSeconds(36)
+            .build();
+
+
+    /*
+    private static DfpAdSlot adSlot = new DfpAdSlot.Builder()
+            .setDfpPlacementId("/15184186/freestar_androidapp_300x250_InContent")
+            .addSize(300, 250)
+            .addCustomTarget("custom1", "value2")
+            .addCustomTarget("custom2", "value1")
+            .setAutoRefreshSeconds(36)
+            .build();
+    */
 
     private Button[][] buttons = new Button[3][3];
     private boolean player1Turn = true;
@@ -39,37 +68,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FreestarAdModel.getInstance(this);
         setContentView(R.layout.activity_main);
 
-        TargetingParams.setYearOfBirth(1965);
-        TargetingParams.setGender(TargetingParams.GENDER.MALE);
-
-        FreestarAdModel.getInstance(this);
-
         ViewGroup adView = findViewById(R.id.ads_layout);
-        List<CustomTargetingEntry> customTargets = new CustomTargetingEntry.ListBuilder()
-                .addCustomTargeting("custom1", "value2")
-                .addCustomTargeting("custom2", "value1")
-                .build();
         FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
-
-        String placementName1 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT1);
-        String placementName2 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT2);
-        String dfpName1 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT1);
-        String dfpName2 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT2);
-        if (placementName1 != null) {
-            injector.injectBannerAd(adView, "ads_layout", placementName1, customTargets);
-        } else if (placementName2 != null) {
-            injector.injectBannerAd(adView, "ads_layout", placementName2, customTargets);
-        } else if (dfpName1 != null) {
-            String dfpSize = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE1);
-            injector.injectBannerAdByDfp(adView, "ads_layout", dfpName1, dfpSize, customTargets);
-        } else if (dfpName2 != null) {
-            String dfpSize = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE2);
-            injector.injectBannerAdByDfp(adView, "ads_layout", dfpName2, dfpSize, customTargets);
-        } else {
-            System.err.println("missing placement for article detail, check configuration properties");
-        }
+        injector.injectBannerAd(adView, adSlot);
 
         textViewPlayer1 = findViewById(R.id.text_view_p1);
         textViewPlayer2 = findViewById(R.id.text_view_p2);
