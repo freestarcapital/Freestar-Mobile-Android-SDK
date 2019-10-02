@@ -8,6 +8,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.1.0__ | _Octomber 1st, 2019_ |  • non-prebid freestar API to 1.0.0. |
 | __1.0.3__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
 | __1.0.2__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
 | __1.0.1__ | _August 28th, 2019_ |  • freestar API to 1.2.3. |
@@ -17,6 +18,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
+| ~> 1.0.0 | 18.1.1 | N/A | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
@@ -57,28 +59,34 @@ adPlacement2=freestar_androidapp_300x250_InContent
 
 `3. ` Edit your activity class, in the onCreate() method.
 
+
+Create your adSlot objects.  They should be static within the activity to ensure consistent ad activity as activities are recreated, etc.  Choose the approprate slot type.  And choose your custom tags as needed.
+
 ```
-    private static final String AD_PLACEMENT1 = "adPlacement1";
-    private static final String AD_PLACEMENT2 = "adPlacement2";
-...
+    private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
+            .setPlacementId("freestar_androidapp_320x50_ATF")
+            .addCustomTarget("pos", "top")
+            .addCustomTarget("s1", "home")
+            .addCustomTarget("pid", "home")
+            .build();
 
-        String placementName = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT1);
-        if (placementName != null) {
-            playAds = true;
-        } else {
-            System.err.println("missing placement for article detail, check configuration properties");
-            playAds = false;
-        }
 
-        if (playAds) {
+    private static final DfpAdSlot adSlot = new DfpAdSlot.Builder()
+            .setDfpPlacementId("/15184186/freestar_androidapp_320x50_ATF")
+            .setAutoRefreshSeconds(30)
+            .addSize(320, 50)
+            .addCustomTarget("pos", "top")
+            .addCustomTarget("s1", "home")
+            .addCustomTarget("pid", "home")
+            .build();
+```
+
+then
+
+```
             ViewGroup adView = findViewById(R.id.ads_layout);
-            List<CustomTargetingEntry> customTargets = new CustomTargetingEntry.ListBuilder()
-                    .addCustomTargeting("custom1", "value2")
-                    .addCustomTargeting("custom2", "value2")
-                    .build();
             FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
-            injector.injectBannerAd(adView, "ads_layout", placementName, customTargets);
-        }
+            injector.injectBannerAd(adView, adSlot);
 
 ```
 
@@ -88,25 +96,19 @@ adPlacement2=freestar_androidapp_300x250_InContent
     @Override
     protected void onResume() {
         super.onResume();
-        if (playAds) {
-            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).resumeBannerAds();
-        }
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).resumeBannerAds();
     }
 
     @Override
     protected void onPause() {
-        if (playAds) {
-            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).pauseBannerAds();
-        }
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).pauseBannerAds();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (playAds) {
-            FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).destroyBannerAds();
-            FreestarAdModel.releaseInstance(this);
-        }
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).destroyBannerAds();
+        FreestarAdModel.releaseInstance(this);
         super.onDestroy();
     }
 
