@@ -8,6 +8,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.1.0__ | _Octomber 1st, 2019_ |  • non-prebid freestar API to 1.0.0. |
 | __1.0.2__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
 | __1.0.1__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
 | __1.0.0__ | _August 28th, 2019_ |  • Initial release. |
@@ -16,6 +17,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
+| ~> 1.0.0 | 18.1.1 | N/A | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
@@ -38,9 +40,6 @@ Here are the basic steps required to use the injector your project.
 
 PREBID_FSDATA_ID=com.freestar.android.examples
 #USE_PREBID_DEV_HOST=true
-
-adPlacement1=freestar_androidapp_320x50_ATF
-adPlacement2=freestar_androidapp_300x250_InContent
 
 # the number of items between ad injections
 item_list.listInjectOffsetCount=3
@@ -114,6 +113,30 @@ import com.freestar.android.sdk.domain.StringContentItem;
 
 `3. ` In your activity, modify the setupRecyclerView() method.
 
+Create your adSlot objects.  They should be static within the activity to ensure consistent ad activity as activities are recreated, etc.  Choose the approprate slot type.  And choose your custom tags as needed.
+
+```
+    private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
+            .setPlacementId("freestar_androidapp_320x50_ATF")
+            .addCustomTarget("pos", "top")
+            .addCustomTarget("s1", "home")
+            .addCustomTarget("pid", "home")
+            .build();
+
+
+    private static final DfpAdSlot adSlot = new DfpAdSlot.Builder()
+            .setDfpPlacementId("/15184186/freestar_androidapp_320x50_ATF")
+            .setAutoRefreshSeconds(30)
+            .addSize(320, 50)
+            .addCustomTarget("pos", "top")
+            .addCustomTarget("s1", "home")
+            .addCustomTarget("pid", "home")
+            .build();
+```
+
+
+
+
 before
 ```
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
@@ -124,7 +147,7 @@ after
         List<ContentItem> items = new ArrayList<>();
         items.addAll(DummyContent.ITEMS);
         FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_list);
-        List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", "freestar_androidapp_300x250_InContent");
+        List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", adSlot);
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
 ```
 
@@ -228,13 +251,13 @@ after
 ```
         public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.item_list);
-            ItemViewHolder result = injector.getViewHolder(parent, viewType);
+            ItemViewHolder result = injector.getViewHolder(parent, viewType, adSlot);
             if (result == null) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_content, parent, false);
                 result = new DummyViewHolder(view);
             } else {
                 PublisherAdView v = (PublisherAdView) ((LinearLayout)result.getInitView()).getChildAt(0);
-                System.out.println("Frogs: "+v.getAdListener().getClass().getName());
+                System.out.println("AdListener: "+v.getAdListener().getClass().getName());
             }
             return result;
         }
@@ -277,14 +300,7 @@ after
                     }
                 });
 
-                //injector.process(holder, adItem);
-
-                injector.process(holder, adItem,
-                        new CustomTargetingEntry.ListBuilder()
-                                .addCustomTargeting("pos", "top")
-                                .addCustomTargeting("s1", "home")
-                                .addCustomTargeting("pid", "home")
-                                .build());
+                injector.process(holder, adItem, adSlot);
             }
         }
 ```
