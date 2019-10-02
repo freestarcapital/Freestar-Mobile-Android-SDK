@@ -4,6 +4,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        //mavenLocal()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.2'
@@ -19,6 +20,7 @@ allprojects {
         maven {
             url  "https://dl.bintray.com/freestarmobile/com.freestar.org.prebid"
         }
+        //mavenLocal()
     }
 }
 

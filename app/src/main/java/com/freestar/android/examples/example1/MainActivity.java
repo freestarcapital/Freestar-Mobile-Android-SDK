@@ -40,9 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             .build();
             */
 
-    private static final String AD_PLACEMENT1x = "adPlacement1";
-    private static final String AD_PLACEMENT2 = "adPlacement2";
-
     private Button[][] buttons = new Button[3][3];
     private boolean player1Turn = true;
     private int roundCount;

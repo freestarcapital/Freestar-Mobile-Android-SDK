@@ -8,6 +8,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.1.0__ | _Octomber 1st, 2019_ |  • non-prebid freestar API to 1.0.0. |
 | __1.0.2__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
 | __1.0.1__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
 | __1.0.0__ | _August 26th, 2019_ |  • Initial release. |
@@ -16,6 +17,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
+| ~> 1.0.0 | 18.1.1 | N/A | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
@@ -49,41 +51,43 @@ Here are the basic steps required to use the create banner.
 `2. ` Edit your _assets/freestar_ads.properties_ file and add in your ad specific information (for example it should look something like this)
 
 ```
-adPlacement1=freestar_androidapp_320x50_ATF
-adPlacement2=freestar_androidapp_300x250_InContent
+None required at this time.
 ```
 
 `3. ` Edit your activity class, in the onCreate() method.
 
+Create your adSlot objects.  They should be static within the activity to ensure consistent ad activity as activities are recreated, etc.  Choose the approprate slot type.  And choose your custom tags as needed.
+
 ```
-    // name match in properties file
-    private static final String AD_PLACEMENT = "adPlacement";
-    
-    ...
-    
-        String adKey = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT);
-        if (adKey != null) {
-            playAds = true;
-        } else {
-            System.err.println("missing placement for article detail, check configuration properties");
-            playAds = false;
-        }
+    private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
+            .setPlacementId("freestar_androidapp_320x50_ATF")
+            .addCustomTarget("pos", "top")
+            .addCustomTarget("s1", "home")
+            .addCustomTarget("pid", "home")
+            .build();
 
-        if (playAds) {
+
+    private static final DfpAdSlot adSlot = new DfpAdSlot.Builder()
+            .setDfpPlacementId("/15184186/freestar_androidapp_320x50_ATF")
+            .setAutoRefreshSeconds(30)
+            .addSize(320, 50)
+            .addCustomTarget("pos", "top")
+            .addCustomTarget("s1", "home")
+            .addCustomTarget("pid", "home")
+            .build();
+```
+
+then
+
+```
             ViewGroup adContainer = findViewById(R.id.ad_container);
+            adView = FreestarAdModel.getInstance(this).createBanner(adContainer, adSlot);
 
-            adView = FreestarAdModel.getInstance(this).createBanner(adKey);
-            adContainer.addView(adView);
-        }
-
-        if (playAds && adView != null) {
             final PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
             PublisherAdRequest adRequest = builder
 //                .addTestDevice("98FA47D6A44364C8F59E90AD4E59A932")
                     .build();
             adView.loadAd(adRequest);
-
-        }
 ```
 
 `4. ` Add the following methods to your activity class. 
@@ -92,14 +96,14 @@ adPlacement2=freestar_androidapp_300x250_InContent
     @Override
     protected void onResume() {
         super.onResume();
-        if (playAds) {
+        if (adView != null) {
             adView.resume();
         }
     }
 
     @Override
     protected void onPause() {
-        if (playAds) {
+        if (adView != null) {
             adView.pause();
         }
         super.onPause();
@@ -107,7 +111,7 @@ adPlacement2=freestar_androidapp_300x250_InContent
 
     @Override
     protected void onDestroy() {
-        if (playAds) {
+        if (adView != null) {
             adView.destroy();
         }
         super.onDestroy();
