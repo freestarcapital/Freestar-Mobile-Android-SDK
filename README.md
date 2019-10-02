@@ -8,6 +8,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.1.0__ | _Octomber 1st, 2019_ |  • non-prebid freestar API to 1.0.0. |
 | __1.0.2__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
 | __1.0.1__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
 | __1.0.0__ | _August 28th, 2019_ |  • Initial release. |
@@ -16,6 +17,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
+| ~> 1.0.0 | 18.1.1 | N/A | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
@@ -43,15 +45,14 @@ Here are the basic steps required to use the SDK with your project.
 #SHARE_GEO_LOCATION=true
 PREBID_FSDATA_ID=com.freestar.android.examples
 #USE_PREBID_DEV_HOST=true
+
+FS_DEBUG_ACTIVE=true
 ```
 
 `2. ` Add access permissions to your _AndroidManifest.xml_ in the **manifest** tag block
 
 ```
-<uses-permission android:name="android.permission.INTERNET"/>`
-<!--
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+all needed permissions are added by api
 -->
 ```
 
@@ -74,7 +75,7 @@ maven {
 `5. ` Add dependency to your _build.gradle_ (Module) in the **dependencies** block
 
 ```
-api 'com.freestar.org.prebid:freestarSDK:1.2.6'
+api 'com.freestar:freestarSDK:1.0.0'
 ```
 
 ## By Example
