@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
         builder = builder.addCustomTargeting("myTarget3", "myValue3");
         PublisherAdRequest request = builder.build();
-        adPlacement1.loadAdX(request);
+        adPlacement1.loadAd(request);
         //adPlacement1.loadAd(request, 35000);
 
     }

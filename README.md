@@ -8,6 +8,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 ###### Change History
 | Version | Release Date | Description |
 | ---- | ------- | ----------- |
+| __1.1.0__ | _Octomber 1st, 2019_ |  • non-prebid freestar API to 1.0.0. |
 | __1.0.3__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
 | __1.0.2__ | _August 28th, 2019_ |  • use FreestarBannerAd name for stand alone - injectable moved to SimpleBannerAd . |
 | __1.0.1__ | _August 28th, 2019_ |  • freestar API to 1.2.3. |
@@ -17,6 +18,7 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 
 | FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
 | ---- | ----- | ----- | ------------ |
+| ~> 1.0.0 | 18.1.1 | N/A | com.google.android.gms:play-services-ads, : jcenter() |
 | ~> 1.2.5 | 18.1.1 | FS-1.2.4 | com.google.android.gms:play-services-ads, : jcenter() |
 
 ---
