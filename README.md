@@ -6,26 +6,21 @@
 We are pleased to announce the release of our SDK! Banner ad formats are currently supported, with more coming.  Be sure to check-in frequently for the latest releases and announcements.
 
 ###### Change History
-| Version | Release Date | Description |
-| ---- | ------- | ----------- |
-| __1.1.0__ | _Octomber 1st, 2019_ |  • non-prebid freestar API to 1.0.0. |
-| __1.0.3__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
-| __1.0.2__ | _August 28th, 2019_ |  • use FreestarBannerAd name for stand alone - injectable moved to SimpleBannerAd . |
-| __1.0.1__ | _August 28th, 2019_ |  • freestar API to 1.2.3. |
-| __1.0.0__ | _August 16th, 2019_ |  • Initial release. |
+|  Version  |     Release Date     |                Description                |
+| --------- | -------------------- | ----------------------------------------- |
+| __1.0.0__ | _October 14th, 2019_ |  • Initial release.                       |
 
 ###### GMA SDK Compatibility Matrix
 
-| FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
-| ---- | ----- | ----- | ------------ |
-| ~> 1.0.0 | 18.1.1 | N/A | com.google.android.gms:play-services-ads, : jcenter() |
-| ~> 1.2.5 | 18.1.1 | FS-1.2.4 | com.google.android.gms:play-services-ads, : jcenter() |
+| FSAdSDK Version | GMS play-services-ads Version | Repository |
+| --------------- | ----------------------------- | ---------- |
+| _____1.0.0_____ | ___________18.2.0____________ |  jcenter() |
 
 ---
 #### Minimum Requirements
 minSDKVersion 16
 targetSDKVersion 28
-com.android.tools.build:gradle 3.4.2
+com.android.tools.build:gradle 3.5.1
 
 ## Getting Started
 ---
@@ -168,7 +163,7 @@ ad_placement1.autoRefreshSeconds=38
 
 The **master** branch contains the basic reference application.  The **freestar-banner-ad** branch has the initialization steps completed, and may act as a reference application for further examples.
 
-[**Reference Application**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/master)
+[**Reference Application #1**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/new/master)
 
 ![**Basic Reference Application #1**](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/app-FSA-1-0.png)
 
