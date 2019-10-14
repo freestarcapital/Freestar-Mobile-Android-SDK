@@ -6,31 +6,21 @@
 We are pleased to announce the release of our SDK! Banner ad formats are currently supported, with more coming.  Be sure to check-in frequently for the latest releases and announcements.
 
 ###### Change History
-| Version | Release Date | Description |
-| ---- | ------- | ----------- |
-| __1.1.0__ | _Octomber 1st, 2019_ |  • non-prebid freestar API to 1.0.0. |
-| __1.0.3__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
-| __1.0.2__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
-| __1.0.1__ | _August 28th, 2019_ |  • freestar API to 1.2.3. |
-| __1.0.0__ | _August 16th, 2019_ |  • Initial release. |
+|  Version  |     Release Date     |                Description                |
+| --------- | -------------------- | ----------------------------------------- |
+| __1.0.0__ | _October 14th, 2019_ |  • Initial release.                       |
 
 ###### GMA SDK Compatibility Matrix
 
-| FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
-| ---- | ----- | ----- | ------------ |
-| ~> 1.0.0 | 18.1.1 | N/A | com.google.android.gms:play-services-ads, : jcenter() |
-| ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
-| ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
-| <= 1.0.0 [EOL]| 17.1.3 | FS-1.0.6 | com.freestar.org.prebid:API1.0 : jcenter() |
+| FSAdSDK Version | GMS play-services-ads Version | Repository |
+| --------------- | ----------------------------- | ---------- |
+| _____1.0.0_____ | ___________18.2.0____________ |  jcenter() |
 
 ---
 #### Minimum Requirements
 minSDKVersion 16
 targetSDKVersion 28
-com.android.tools.build:gradle 3.4.2
+com.android.tools.build:gradle 3.5.1
 
 ## Getting Started
 ---
@@ -51,10 +41,14 @@ Here are the basic steps required to use the injector your project.
 
 `2. ` Edit your _assets/freestar_ads.properties_ file and add in your ad specific information (for example it should look something like this)
 
+OPTION A
 ```
 adPlacement1=freestar_androidapp_320x50_ATF
 adPlacement2=freestar_androidapp_300x250_InContent
 #ads_layout.articleDetailAutoRefresh=38
+```
+OPTION B (preferred)
+```
 ```
 
 `3. ` Edit your activity class, in the onCreate() method.
@@ -62,6 +56,39 @@ adPlacement2=freestar_androidapp_300x250_InContent
 
 Create your adSlot objects.  They should be static within the activity to ensure consistent ad activity as activities are recreated, etc.  Choose the approprate slot type.  And choose your custom tags as needed.
 
+OPTION A
+```
+    private static final String AD_PLACEMENT1 = "adPlacement1";
+    private static final String AD_PLACEMENT2 = "adPlacement2";
+    private static final String DFP_PLACEMENT1 = "dfpPlacement1";
+    private static final String DFP_PLACEMENT2 = "dfpPlacement2";
+    private static final String DFP_SIZE1 = "dfpSize1";
+    private static final String DFP_SIZE2 = "dfpSize2";
+    private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
+```
+
+then
+
+```
+         ViewGroup adView = findViewById(R.id.ads_layout);
+         List<CustomTargetingEntry> customTargets = new CustomTargetingEntry.ListBuilder()
+                 .addCustomTargeting("custom1", "value2")
+                 .addCustomTargeting("custom2", "value1")
+                 .build();
+         FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
+         String placementName1 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT1);
+         #String placementName2 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT2);
+         #String dfpName1 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT1);
+         #String dfpName2 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT2);
+         injector.injectBannerAd(adView, "ads_layout", placementName1, customTargets);
+         #injector.injectBannerAd(adView, "ads_layout", placementName2, customTargets);
+         #String dfpSize = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE1);
+         #injector.injectBannerAdByDfp(adView, "ads_layout", dfpName1, dfpSize, customTargets);
+         #String dfpSize = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE2);
+         #injector.injectBannerAdByDfp(adView, "ads_layout", dfpName2, dfpSize, customTargets);
+
+```
+OPTION B (preferred)
 ```
     private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
             .setPlacementId("freestar_androidapp_320x50_ATF")
@@ -85,13 +112,14 @@ then
 
 ```
             ViewGroup adView = findViewById(R.id.ads_layout);
-            FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
+            FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(adSlot);
             injector.injectBannerAd(adView, adSlot);
 
 ```
 
 `4. ` Add the following methods to your activity class. 
 
+OPTION A
 ```
     @Override
     protected void onResume() {
@@ -108,6 +136,28 @@ then
     @Override
     protected void onDestroy() {
         FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).destroyBannerAds();
+        FreestarAdModel.releaseInstance(this);
+        super.onDestroy();
+    }
+
+```
+OPTION B (preferred)
+```
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot).resumeBannerAds();
+    }
+
+    @Override
+    protected void onPause() {
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot).pauseBannerAds();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot).destroyBannerAds();
         FreestarAdModel.releaseInstance(this);
         super.onDestroy();
     }

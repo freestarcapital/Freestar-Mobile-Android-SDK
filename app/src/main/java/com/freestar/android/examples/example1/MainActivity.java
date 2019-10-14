@@ -11,15 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.freestar.android.sdk.adslot.DfpAdSlot;
-import com.freestar.android.sdk.adslot.FreestarAdSlot;
-import com.freestar.android.sdk.domain.CustomTargetingEntry;
 import com.freestar.android.sdk.model.FreestarAdModel;
+import com.freestar.android.sdk.model.FreestarInteraction;
 import com.freestar.android.sdk.model.FreestarViewInjector;
 
-
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final boolean interactionSuccess = new FreestarInteraction.Builder()
+            .addDisplayOption("<html><body><h2 style='color:red;font-size:40px'>Your patronage helps us better support you</h2></body></html>")
+            .addDisplayOption("<html><body><h2 style='color:red;font-size:40px'>Please support our sponsors</h2></body></html>")
+            .addDisplayOption("<html><body><h2 style='color:red;font-size:40px'>Ads support this site</h2></body></html>")
+            .addDisplayOption("<html><body><h2 style='color:green;font-size:40px'>Ads powered by Freestar</h2></body></html>")
+            .addClickSupportOption("\"<html><body><h1 style='color:orange;font-size:40px'>Thank-you for your support</h1></body></html>\"")
+            .load();
 
     /*
     private static FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
@@ -43,7 +46,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             .addSize(320, 50)
             .addCustomTarget("custom1", "value2")
             .addCustomTarget("custom2", "value1")
-            .setAutoRefreshSeconds(36)
+            .setAutoRefreshSeconds(30)
+            .build();
+
+    private static DfpAdSlot adSlotB = new DfpAdSlot.Builder()
+            .setDfpPlacementId("/15184186/freestar_androidapp_300x250_InContent")
+            .addSize(300, 250)
+            .addCustomTarget("custom1", "value2")
+            .addCustomTarget("custom2", "value1")
+            .setAutoRefreshSeconds(30)
             .build();
 
 
@@ -72,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         ViewGroup adView = findViewById(R.id.ads_layout);
-        FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main);
-        injector.injectBannerAd(adView, adSlot);
+        FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(adSlot);
+        injector.injectBannerAdByDfp(adView, adSlot);
 
         textViewPlayer1 = findViewById(R.id.text_view_p1);
         textViewPlayer2 = findViewById(R.id.text_view_p2);
@@ -226,18 +237,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).resumeAd();
+        FreestarAdModel.getInstance(this).lookupViewInjector(adSlot).resumeAd();
     }
 
     @Override
     protected void onPause() {
-        FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).pauseAd();
+        FreestarAdModel.getInstance(this).lookupViewInjector(adSlot).pauseAd();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        FreestarAdModel.getInstance(this).lookupViewInjector(R.layout.activity_main).destroyAd();
+        FreestarAdModel.getInstance(this).lookupViewInjector(adSlot).destroyAd();
         FreestarAdModel.releaseInstance(this);
         super.onDestroy();
     }
