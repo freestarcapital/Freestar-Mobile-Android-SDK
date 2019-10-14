@@ -6,31 +6,21 @@
 We are pleased to announce the release of our SDK! Banner ad formats are currently supported, with more coming.  Be sure to check-in frequently for the latest releases and announcements.
 
 ###### Change History
-| Version | Release Date | Description |
-| ---- | ------- | ----------- |
-| __1.1.0__ | _Octomber 1st, 2019_ |  • non-prebid freestar API to 1.0.0. |
-| __1.0.3__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
-| __1.0.2__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
-| __1.0.1__ | _August 28th, 2019_ |  • freestar API to 1.2.3. |
-| __1.0.0__ | _August 16th, 2019_ |  • Initial release. |
+|  Version  |     Release Date     |                Description                |
+| --------- | -------------------- | ----------------------------------------- |
+| __1.0.0__ | _October 14th, 2019_ |  • Initial release.                       |
 
 ###### GMA SDK Compatibility Matrix
 
-| FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
-| ---- | ----- | ----- | ------------ |
-| ~> 1.0.0 | 18.1.1 | N/A | com.google.android.gms:play-services-ads, : jcenter() |
-| ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
-| ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
-| <= 1.0.0 [EOL]| 17.1.3 | FS-1.0.6 | com.freestar.org.prebid:API1.0 : jcenter() |
+| FSAdSDK Version | GMS play-services-ads Version | Repository |
+| --------------- | ----------------------------- | ---------- |
+| _____1.0.0_____ | ___________18.2.0____________ |  jcenter() |
 
 ---
 #### Minimum Requirements
 minSDKVersion 16
 targetSDKVersion 28
-com.android.tools.build:gradle 3.4.2
+com.android.tools.build:gradle 3.5.1
 
 ## Getting Started
 ---
@@ -68,18 +58,10 @@ all required permissions are added by the api
   android:value="true"/>
   ```
 
-`4. ` Add dependency to your _build.gradle_ (Project) in the **allprojects.repositories** block
+`4. ` Add dependency to your _build.gradle_ (Module) in the **dependencies** block
 
 ```
-maven {
-  url  "https://dl.bintray.com/freestarmobile/com.freestar.org.prebid"
-}
-```
-
-`5. ` Add dependency to your _build.gradle_ (Module) in the **dependencies** block
-
-```
-api 'com.freestar:freestarSDK:1.0.0'
+api 'com.freestar.android:freestarSDK:1.0.0'
 ```
 
 ## By Example
