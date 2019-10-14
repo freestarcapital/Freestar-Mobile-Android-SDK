@@ -6,30 +6,21 @@
 We are pleased to announce the release of our SDK! Banner ad formats are currently supported, with more coming.  Be sure to check-in frequently for the latest releases and announcements.
 
 ###### Change History
-| Version | Release Date | Description |
-| ---- | ------- | ----------- |
-| __1.1.0__ | _Octomber 1st, 2019_ |  • non-prebid freestar API to 1.0.0. |
-| __1.0.2__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
-| __1.0.1__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
-| __1.0.0__ | _August 26th, 2019_ |  • Initial release. |
+|  Version  |     Release Date     |                Description                |
+| --------- | -------------------- | ----------------------------------------- |
+| __1.0.0__ | _October 14th, 2019_ |  • Initial release.                       |
 
 ###### GMA SDK Compatibility Matrix
 
-| FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
-| ---- | ----- | ----- | ------------ |
-| ~> 1.0.0 | 18.1.1 | N/A | com.google.android.gms:play-services-ads, : jcenter() |
-| ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
-| ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.2.0 | 18.1.1 | FS-1.2.0 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.1.0 [EOL]| 17.1.3 | FS-1.1.0 | com.google.android.gms:play-services-ads, : mavenLocal() |
-| <= 1.0.0 [EOL]| 17.1.3 | FS-1.0.6 | com.freestar.org.prebid:API1.0 : jcenter() |
+| FSAdSDK Version | GMS play-services-ads Version | Repository |
+| --------------- | ----------------------------- | ---------- |
+| _____1.0.0_____ | ___________18.2.0____________ |  jcenter() |
 
 ---
 #### Minimum Requirements
 minSDKVersion 16
 targetSDKVersion 28
-com.android.tools.build:gradle 3.4.2
+com.android.tools.build:gradle 3.5.1
 
 ## Getting Started
 ---
@@ -58,6 +49,27 @@ None required at this time.
 
 Create your adSlot objects.  They should be static within the activity to ensure consistent ad activity as activities are recreated, etc.  Choose the approprate slot type.  And choose your custom tags as needed.
 
+Option A
+```
+    private static final String AD_PLACEMENT1 = "adPlacement1";
+```
+
+then
+
+```
+        String adKey = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT1);
+        ViewGroup adContainer = findViewById(R.id.ad_container);
+        adView = FreestarAdModel.getInstance(this).createBanner(adKey);
+        adContainer.addView(adView);
+
+        final PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
+        PublisherAdRequest adRequest = builder
+        // .addTestDevice("98FA47D6A44364C8F59E90AD4E59A932")
+          .build();
+          
+        adView.loadAd(adRequest);
+```
+Option B (preferred)
 ```
     private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
             .setPlacementId("freestar_androidapp_320x50_ATF")
@@ -96,24 +108,18 @@ then
     @Override
     protected void onResume() {
         super.onResume();
-        if (adView != null) {
-            adView.resume();
-        }
+        adView.resume();
     }
 
     @Override
     protected void onPause() {
-        if (adView != null) {
-            adView.pause();
-        }
+        adView.pause();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (adView != null) {
-            adView.destroy();
-        }
+        adView.destroy();
         super.onDestroy();
     }
 
