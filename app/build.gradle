@@ -31,5 +31,5 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    api 'com.freestar:freestarSDK:1.0.0E-SNAPSHOT'
+    api 'com.freestar.android:freestarSDK:1.0.0'
 }

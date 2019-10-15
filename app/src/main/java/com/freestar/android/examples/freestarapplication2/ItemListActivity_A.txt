@@ -14,6 +14,7 @@ import com.freestar.android.sdk.adslot.DfpAdSlot;
 import com.freestar.android.sdk.adslot.FreestarAdSlot;
 import com.freestar.android.sdk.domain.AdContentItem;
 import com.freestar.android.sdk.domain.ContentItem;
+import com.freestar.android.sdk.domain.CustomTargetingEntry;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.FreestarRecyclerViewInjector;
 import com.freestar.android.sdk.widget.holder.ItemViewHolder;
@@ -40,40 +41,12 @@ import java.util.List;
  * item details side-by-side using two vertical panes.
  */
 public class ItemListActivity extends AppCompatActivity {
-    /*
-    private static final boolean interactionSuccess = new FreestarInteraction.Builder()
-            .addDisplayOption("<html><body><h2 style='color:red;font-size:40px'>Your patronage helps us better support you</h2></body></html>")
-            .addDisplayOption("<html><body><h2 style='color:red;font-size:40px'>Please support our sponsors</h2></body></html>")
-            .addDisplayOption("<html><body><h2 style='color:red;font-size:40px'>Ads support this site</h2></body></html>")
-            .addDisplayOption("<html><body><h2 style='color:green;font-size:40px'>Ads powered by Freestar</h2></body></html>")
-            .addClickSupportOption("\"<html><body><h1 style='color:orange;font-size:40px'>Thank-you for your support</h1></body></html>\"")
-            .load();
-     */
-
-    private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
-            .setPlacementId("freestar_androidapp_320x50_ATF")
-            .addCustomTarget("pos", "top")
-            .addCustomTarget("s1", "home")
-            .addCustomTarget("pid", "home")
-            .build();
-
-    /*
-    private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
-            .setPlacementId("freestar_androidapp_300x250_InContent")
-            .build();
-
-    private static final DfpAdSlot adSlot = new DfpAdSlot.Builder()
-            .setDfpPlacementId("/15184186/freestar_androidapp_320x50_ATF")
-            .setAutoRefreshSeconds(30)
-            .addSize(320, 50)
-            .build();
-
-    private static final DfpAdSlot adSlot = new DfpAdSlot.Builder()
-            .setDfpPlacementId("/15184186/freestar_androidapp_300x250_InContent")
-            .addSize(300, 250)
-            .setAutoRefreshSeconds(30)
-            .build();
-     */
+    private static final String AD_PLACEMENT_1 = "adPlacement1";
+    private static final String AD_PLACEMENT_2 = "adPlacement2";
+    private static final String DFP_PLACEMENT_1 = "dfpPlacement1";
+    private static final String DFP_PLACEMENT_2 = "dfpPlacement2";
+    private static final String DFP_SIZE_1 = "dfpSize1";
+    private static final String DFP_SIZE_2 = "dfpSize2";
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -115,9 +88,17 @@ public class ItemListActivity extends AppCompatActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         List<ContentItem> items = new ArrayList<>();
         items.addAll(DummyContent.ITEMS);
-        FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot);
+        FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_item_list);
 
-        List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", adSlot);
+        String adSlot1 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_1);
+        String adSlot2 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_2);
+        String dfpSlot1 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT_1);
+        String dfpSlot2 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT_2);
+        String dfpSize1 = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE_1);
+        String dfpSize2 = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE_2);
+
+        List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", adSlot1);
+        //List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", dfpSlot1, dfpSize1);
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
     }
 
@@ -162,8 +143,8 @@ public class ItemListActivity extends AppCompatActivity {
 
         @Override
         public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot);
-            ItemViewHolder result = injector.getViewHolder(parent, viewType, adSlot);
+            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.activity_item_list);
+            ItemViewHolder result = injector.getViewHolder(parent, viewType);
             if (result == null) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_content, parent, false);
                 result = new DummyViewHolder(view);
@@ -183,7 +164,7 @@ public class ItemListActivity extends AppCompatActivity {
                 holder.itemView.setOnClickListener(mOnClickListener);
             } else {
                 AdContentItem adItem = (AdContentItem) item;
-                FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot);
+                FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.activity_item_list);
                 injector.setAdListener(holder, new AdListener() {
                     @Override
                     public void onAdLoaded() {
@@ -195,7 +176,13 @@ public class ItemListActivity extends AppCompatActivity {
                     }
                 });
 
-                injector.process(holder, adItem, adSlot);
+                injector.process(holder, adItem,
+                        new CustomTargetingEntry.ListBuilder()
+                                .addCustomTargeting("pos", "top")
+                                .addCustomTargeting("s1", "home")
+                                .addCustomTargeting("pid", "home")
+                                .build());
+                //injector.process(holder, adItem);
             }
         }
 
@@ -207,7 +194,7 @@ public class ItemListActivity extends AppCompatActivity {
         @Override
         public int getItemViewType(int position) {
             ContentItem item = mValues.get(position);
-            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot);
+            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.activity_item_list);
             return injector.getItemViewType(item);
         }
 
@@ -247,18 +234,19 @@ public class ItemListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot).resumeBannerAds();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_item_list).resumeBannerAds();
     }
 
     @Override
     protected void onPause() {
-        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot).pauseBannerAds();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_item_list).pauseBannerAds();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot).destroyBannerAds();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_item_list).destroyBannerAds();
+        FreestarAdModel.releaseInstance(this);
         super.onDestroy();
     }
 }

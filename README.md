@@ -1,4 +1,4 @@
-![Freestar](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/freestar.jpg)
+ ![Freestar](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/freestar.jpg)
 # Freestar Mobile Android SDK Integration Guide
 # API - _freestar-android-sdk_ Recycler View Injector
 
@@ -6,27 +6,21 @@
 We are pleased to announce the release of our SDK! Banner ad formats are currently supported, with more coming.  Be sure to check-in frequently for the latest releases and announcements.
 
 ###### Change History
-| Version | Release Date | Description |
-| ---- | ------- | ----------- |
-| __1.1.0__ | _Octomber 1st, 2019_ |  • non-prebid freestar API to 1.0.0. |
-| __1.0.2__ | _September 5th, 2019_ |  • freestar API to 1.2.6. |
-| __1.0.1__ | _September 3rd, 2019_ |  • freestar API to 1.2.5. |
-| __1.0.0__ | _August 28th, 2019_ |  • Initial release. |
+|  Version  |     Release Date     |                Description                |
+| --------- | -------------------- | ----------------------------------------- |
+| __1.0.0__ | _October 14th, 2019_ |  • Initial release.                       |
 
 ###### GMA SDK Compatibility Matrix
 
-| FSAdSDK Version | GMA SDK Version | Prebid SDK Version<br>(Freestar) | Podfile |
-| ---- | ----- | ----- | ------------ |
-| ~> 1.0.0 | 18.1.1 | N/A | com.google.android.gms:play-services-ads, : jcenter() |
-| ~> 1.2.6 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
-| = 1.2.5 | 18.1.1 | FS-1.2.5 | com.google.android.gms:play-services-ads, : jcenter() |
-| ~> 1.2.2 | 18.1.1 | FS-1.2.3 | com.google.android.gms:play-services-ads, : jcenter() |
+| FSAdSDK Version | GMS play-services-ads Version | Repository |
+| --------------- | ----------------------------- | ---------- |
+| _____1.0.0_____ | ___________18.2.0____________ |  jcenter() |
 
 ---
 #### Minimum Requirements
 minSDKVersion 16
 targetSDKVersion 28
-com.android.tools.build:gradle 3.4.2
+com.android.tools.build:gradle 3.5.1
 
 ## Getting Started
 ---
@@ -35,6 +29,37 @@ Here are the basic steps required to use the injector your project.
 
 `1. ` Edit your _assets/freestar_ads.properties_ file and add in your ad specific information (for example it should look something like this)
 
+Option A
+```
+#SHARE_GEO_LOCATION=true
+
+PREBID_FSDATA_ID=com.freestar.android.examples
+#USE_PREBID_DEV_HOST=true
+
+adPlacement1=freestar_androidapp_320x50_ATF
+adPlacement2=freestar_androidapp_300x250_InContent
+dfpPlacement1=/15184186/freestar_androidapp_320x50_ATF
+dfpSize1=320x50
+dfpPlacement2=/15184186/freestar_androidapp_300x250_InContent
+dfpSize2=300x250
+ad_placement1.autoRefreshSeconds=30
+ad_placement2.autoRefreshSeconds=30
+
+# the number of items between ad injections
+item_list.listInjectOffsetCount=3
+
+# should the list have a leading ad?
+item_list.listInjectOffsetIncludeLeading=true
+
+# should the list have a mandated trailing ad?
+item_list.listInjectOffsetIncludeTrailing=true
+
+# ad refresh rate override
+#item_list.listInjectAutoRefresh=120000
+
+```
+
+Option B (preferred)
 ```
 #SHARE_GEO_LOCATION=true
 
@@ -115,6 +140,40 @@ import com.freestar.android.sdk.domain.StringContentItem;
 
 Create your adSlot objects.  They should be static within the activity to ensure consistent ad activity as activities are recreated, etc.  Choose the approprate slot type.  And choose your custom tags as needed.
 
+Option 1
+```
+    private static final String AD_PLACEMENT_1 = "adPlacement1";
+    private static final String AD_PLACEMENT_2 = "adPlacement2";
+    private static final String DFP_PLACEMENT_1 = "dfpPlacement1";
+    private static final String DFP_PLACEMENT_2 = "dfpPlacement2";
+    private static final String DFP_SIZE_1 = "dfpSize1";
+    private static final String DFP_SIZE_2 = "dfpSize2";
+```
+
+before
+```
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+```
+
+after
+```
+        List<ContentItem> items = new ArrayList<>();
+        items.addAll(DummyContent.ITEMS);
+        FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_list);
+       
+        String adSlot1 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_1);
+        String adSlot2 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_2);
+        String dfpSlot1 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT_1);
+        String dfpSlot2 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT_2);
+        String dfpSize1 = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE_1);
+        String dfpSize2 = FreestarAdModel.getInstance(this).getProperty(DFP_SIZE_2);
+
+        List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", adSlot1);
+        //List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", dfpSlot1, dfpSize1);
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
+```
+
+Option 2 (Preferred)
 ```
     private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
             .setPlacementId("freestar_androidapp_320x50_ATF")
@@ -134,9 +193,6 @@ Create your adSlot objects.  They should be static within the activity to ensure
             .build();
 ```
 
-
-
-
 before
 ```
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
@@ -146,7 +202,7 @@ after
 ```
         List<ContentItem> items = new ArrayList<>();
         items.addAll(DummyContent.ITEMS);
-        FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_list);
+        FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot);
         List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", adSlot);
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
 ```
@@ -238,6 +294,7 @@ after
 
 `5. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter with the onCreateViewHolder() method.
 
+OPTION A
 before
 ```
         public DummyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -251,6 +308,31 @@ after
 ```
         public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.item_list);
+            ItemViewHolder result = injector.getViewHolder(parent, viewType);
+            if (result == null) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_content, parent, false);
+                result = new DummyViewHolder(view);
+            } else {
+                PublisherAdView v = (PublisherAdView) ((LinearLayout)result.getInitView()).getChildAt(0);
+                System.out.println("AdListener: "+v.getAdListener().getClass().getName());
+            }
+            return result;
+        }
+```
+OPTION B (Preferred)
+before
+```
+        public DummyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_list_content, parent, false);
+            return new DummyViewHolder(view);
+        }
+```
+
+after
+```
+        public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot1);
             ItemViewHolder result = injector.getViewHolder(parent, viewType, adSlot);
             if (result == null) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_content, parent, false);
@@ -265,6 +347,7 @@ after
 
 `6. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter with the onBindViewHolder() method.
 
+Option A
 before
 ```
         public void onBindViewHolder(final DummyViewHolder holder, int position) {
@@ -300,6 +383,53 @@ after
                     }
                 });
 
+-                injector.process(holder, adItem,
+-                        new CustomTargetingEntry.ListBuilder()
+-                                .addCustomTargeting("pos", "top")
+-                                .addCustomTargeting("s1", "home")
+-                                .addCustomTargeting("pid", "home")
+-                                .build());
++                injector.process(holder, adItem, adSlot);
+            }
+        }
+```
+
+Option B (Preferred)
+before
+```
+        public void onBindViewHolder(final DummyViewHolder holder, int position) {
+            holder.mIdView.setText(mValues.get(position).id);
+            holder.mContentView.setText(mValues.get(position).content);
+
+            holder.itemView.setTag(mValues.get(position));
+            holder.itemView.setOnClickListener(mOnClickListener);
+```
+
+after
+```
+        public void onBindViewHolder(final ItemViewHolder holder, int position) {
+            ContentItem item = mValues.get(position);
+            if (item instanceof DummyContent.DummyItem) {
+                DummyContent.DummyItem itemD = (DummyContent.DummyItem) item;
+                DummyViewHolder viewHolder = (DummyViewHolder) holder;
+                viewHolder.mIdView.setText(itemD.id);
+                viewHolder.mContentView.setText(itemD.content);
+                holder.itemView.setTag(mValues.get(position));
+                holder.itemView.setOnClickListener(mOnClickListener);
+            } else {
+                AdContentItem adItem = (AdContentItem) item;
+                FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot1);
+                injector.setAdListener(holder, new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        // do something
+                    }
+
+                    public void onAdClicked() {
+                        // do something
+                    }
+                });
+
                 injector.process(holder, adItem, adSlot);
             }
         }
@@ -307,6 +437,7 @@ after
 
 `7. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter add a getItemViewType() method.
 
+Option A
 ```
         @Override
         public int getItemViewType(int position) {
@@ -315,6 +446,16 @@ after
             return injector.getItemViewType(item);
         }
 ```
+Option B (Preferred)
+```
+        @Override
+        public int getItemViewType(int position) {
+            ContentItem item = mValues.get(position);
+            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot1);
+            return injector.getItemViewType(item);
+        }
+```
+
 
 `8. ` In your activity, continuing on the SimpleItemRecyclerViewAdapter - change the DummyViewHolder.
 
@@ -328,6 +469,26 @@ before
                 super(view);
                 mIdView = (TextView) view.findViewById(R.id.id_text);
                 mContentView = (TextView) view.findViewById(R.id.content);
+            }
+            
+            @Override
+            public void resume() {
+
+            }
+
+            @Override
+            public void pause() {
+
+            }
+
+            @Override
+            public boolean isPaused() {
+                return false;
+            }
+
+            @Override
+            public void destroy() {
+
             }
         }
 ```
@@ -343,7 +504,73 @@ after
                 mIdView = view.findViewById(R.id.id_text);
                 mContentView = view.findViewById(R.id.content);
             }
+            
+            @Override
+            public void resume() {
+
+            }
+
+            @Override
+            public void pause() {
+
+            }
+
+            @Override
+            public boolean isPaused() {
+                return false;
+            }
+
+            @Override
+            public void destroy() {
+
+            }
         }
+```
+`9. ` Add the following methods to your activity class. 
+
+Option A
+```
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).resumeBannerAds();
+    }
+
+    @Override
+    protected void onPause() {
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).pauseBannerAds();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).destroyBannerAds();
+        FreestarAdModel.releaseInstance(this);
+        super.onDestroy();
+    }
+
+```
+Option B (Preferred)
+```
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot1).resumeBannerAds();
+    }
+
+    @Override
+    protected void onPause() {
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot1).pauseBannerAds();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot1).destroyBannerAds();
+        FreestarAdModel.releaseInstance(this);
+        super.onDestroy();
+    }
+
 ```
 
 
