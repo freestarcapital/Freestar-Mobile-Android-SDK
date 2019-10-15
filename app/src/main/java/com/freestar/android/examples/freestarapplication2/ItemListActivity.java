@@ -16,6 +16,7 @@ import com.freestar.android.sdk.domain.AdContentItem;
 import com.freestar.android.sdk.domain.ContentItem;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.FreestarRecyclerViewInjector;
+import com.freestar.android.sdk.model.ListInjectorProperties;
 import com.freestar.android.sdk.widget.holder.ItemViewHolder;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
@@ -117,7 +118,11 @@ public class ItemListActivity extends AppCompatActivity {
         items.addAll(DummyContent.ITEMS);
         FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot);
 
-        List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", adSlot);
+        List<ContentItem> masterItems = injector.injectBannerAd(items, new ListInjectorProperties.Builder()
+                .setListInjectOffsetCount(3)
+                .setListInjectOffsetIncludeLeading(true)
+                .setListInjectOffsetIncludeTrailing(true)
+                .build(), adSlot);
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
     }
 

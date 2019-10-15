@@ -1,4 +1,4 @@
- ![Freestar](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/freestar.jpg)
+![Freestar](https://github.com/freestarcapital/Freestar-Mobile-Android-SDK/raw/master/images/freestar.jpg)
 # Freestar Mobile Android SDK Integration Guide
 # API - _freestar-android-sdk_ Recycler View Injector
 
@@ -66,18 +66,6 @@ Option B (preferred)
 PREBID_FSDATA_ID=com.freestar.android.examples
 #USE_PREBID_DEV_HOST=true
 
-# the number of items between ad injections
-item_list.listInjectOffsetCount=3
-
-# should the list have a leading ad?
-item_list.listInjectOffsetIncludeLeading=true
-
-# should the list have a mandated trailing ad?
-item_list.listInjectOffsetIncludeTrailing=true
-
-# ad refresh rate override
-#item_list.listInjectAutoRefresh=120000
-
 ```
 
 `2. ` Modify the domain object that is to be listed.  On our case the object id is of type **String** so we will need to extends **com.freestar.android.sdk.domain.StringContentItem** and implement the methods in its interface.
@@ -140,7 +128,7 @@ import com.freestar.android.sdk.domain.StringContentItem;
 
 Create your adSlot objects.  They should be static within the activity to ensure consistent ad activity as activities are recreated, etc.  Choose the approprate slot type.  And choose your custom tags as needed.
 
-Option 1
+Option A
 ```
     private static final String AD_PLACEMENT_1 = "adPlacement1";
     private static final String AD_PLACEMENT_2 = "adPlacement2";
@@ -159,8 +147,8 @@ after
 ```
         List<ContentItem> items = new ArrayList<>();
         items.addAll(DummyContent.ITEMS);
-        FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.item_list);
-       
+        FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_item_list);
+
         String adSlot1 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_1);
         String adSlot2 = FreestarAdModel.getInstance(this).getProperty(AD_PLACEMENT_2);
         String dfpSlot1 = FreestarAdModel.getInstance(this).getProperty(DFP_PLACEMENT_1);
@@ -173,7 +161,7 @@ after
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
 ```
 
-Option 2 (Preferred)
+Option B (Preferred)
 ```
     private static final FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
             .setPlacementId("freestar_androidapp_320x50_ATF")
@@ -182,7 +170,7 @@ Option 2 (Preferred)
             .addCustomTarget("pid", "home")
             .build();
 
-
+or
     private static final DfpAdSlot adSlot = new DfpAdSlot.Builder()
             .setDfpPlacementId("/15184186/freestar_androidapp_320x50_ATF")
             .setAutoRefreshSeconds(30)
@@ -203,7 +191,11 @@ after
         List<ContentItem> items = new ArrayList<>();
         items.addAll(DummyContent.ITEMS);
         FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot);
-        List<ContentItem> masterItems = injector.injectBannerAd(items, "item_list", adSlot);
+        List<ContentItem> masterItems = injector.injectBannerAd(items, new ListInjectorProperties.Builder()
+                                                                                       .setListInjectOffsetCount(3)
+                                                                                       .setListInjectOffsetIncludeLeading(true)
+                                                                                       .setListInjectOffsetIncludeTrailing(true)                 
+                                                                                       .build(), adSlot);
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, masterItems, mTwoPane));
 ```
 
@@ -307,14 +299,11 @@ before
 after
 ```
         public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.item_list);
+            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.activity_item_list);
             ItemViewHolder result = injector.getViewHolder(parent, viewType);
             if (result == null) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_content, parent, false);
                 result = new DummyViewHolder(view);
-            } else {
-                PublisherAdView v = (PublisherAdView) ((LinearLayout)result.getInitView()).getChildAt(0);
-                System.out.println("AdListener: "+v.getAdListener().getClass().getName());
             }
             return result;
         }
@@ -331,15 +320,13 @@ before
 
 after
 ```
+        @Override
         public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot1);
+            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot);
             ItemViewHolder result = injector.getViewHolder(parent, viewType, adSlot);
             if (result == null) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_content, parent, false);
                 result = new DummyViewHolder(view);
-            } else {
-                PublisherAdView v = (PublisherAdView) ((LinearLayout)result.getInitView()).getChildAt(0);
-                System.out.println("AdListener: "+v.getAdListener().getClass().getName());
             }
             return result;
         }
@@ -371,7 +358,7 @@ after
                 holder.itemView.setOnClickListener(mOnClickListener);
             } else {
                 AdContentItem adItem = (AdContentItem) item;
-                FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.item_list);
+                FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.activity_item_list);
                 injector.setAdListener(holder, new AdListener() {
                     @Override
                     public void onAdLoaded() {
@@ -383,13 +370,13 @@ after
                     }
                 });
 
--                injector.process(holder, adItem,
--                        new CustomTargetingEntry.ListBuilder()
--                                .addCustomTargeting("pos", "top")
--                                .addCustomTargeting("s1", "home")
--                                .addCustomTargeting("pid", "home")
--                                .build());
-+                injector.process(holder, adItem, adSlot);
+                injector.process(holder, adItem,
+                        new CustomTargetingEntry.ListBuilder()
+                                .addCustomTargeting("pos", "top")
+                                .addCustomTargeting("s1", "home")
+                                .addCustomTargeting("pid", "home")
+                                .build());
+                //injector.process(holder, adItem);
             }
         }
 ```
@@ -418,7 +405,7 @@ after
                 holder.itemView.setOnClickListener(mOnClickListener);
             } else {
                 AdContentItem adItem = (AdContentItem) item;
-                FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot1);
+                FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot);
                 injector.setAdListener(holder, new AdListener() {
                     @Override
                     public void onAdLoaded() {
@@ -442,7 +429,7 @@ Option A
         @Override
         public int getItemViewType(int position) {
             ContentItem item = mValues.get(position);
-            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.item_list);
+            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(R.layout.activity_item_list);
             return injector.getItemViewType(item);
         }
 ```
@@ -451,7 +438,7 @@ Option B (Preferred)
         @Override
         public int getItemViewType(int position) {
             ContentItem item = mValues.get(position);
-            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot1);
+            FreestarRecyclerViewInjector injector = FreestarAdModel.getInstance(mParentActivity).lookupRecyclerViewInjector(adSlot);
             return injector.getItemViewType(item);
         }
 ```
@@ -504,7 +491,7 @@ after
                 mIdView = view.findViewById(R.id.id_text);
                 mContentView = view.findViewById(R.id.content);
             }
-            
+
             @Override
             public void resume() {
 
@@ -533,18 +520,18 @@ Option A
     @Override
     protected void onResume() {
         super.onResume();
-        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).resumeBannerAds();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_item_list).resumeBannerAds();
     }
 
     @Override
     protected void onPause() {
-        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).pauseBannerAds();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_item_list).pauseBannerAds();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_main).destroyBannerAds();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(R.layout.activity_item_list).destroyBannerAds();
         FreestarAdModel.releaseInstance(this);
         super.onDestroy();
     }
@@ -555,19 +542,18 @@ Option B (Preferred)
     @Override
     protected void onResume() {
         super.onResume();
-        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot1).resumeBannerAds();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot).resumeBannerAds();
     }
 
     @Override
     protected void onPause() {
-        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot1).pauseBannerAds();
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot).pauseBannerAds();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot1).destroyBannerAds();
-        FreestarAdModel.releaseInstance(this);
+        FreestarAdModel.getInstance(this).lookupRecyclerViewInjector(adSlot).destroyBannerAds();
         super.onDestroy();
     }
 
