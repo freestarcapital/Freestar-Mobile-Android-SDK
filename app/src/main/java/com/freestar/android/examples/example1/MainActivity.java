@@ -11,9 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.freestar.android.sdk.adslot.DfpAdSlot;
+import com.freestar.android.sdk.adslot.FreestarAdSlot;
 import com.freestar.android.sdk.model.FreestarAdModel;
 import com.freestar.android.sdk.model.FreestarInteraction;
 import com.freestar.android.sdk.model.FreestarViewInjector;
+import com.freestar.android.sdk.model.InjectorProperties;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final boolean interactionSuccess = new FreestarInteraction.Builder()
@@ -24,24 +26,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             .addClickSupportOption("\"<html><body><h1 style='color:orange;font-size:40px'>Thank-you for your support</h1></body></html>\"")
             .load();
 
-    /*
     private static FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
             .setPlacementId("freestar_androidapp_320x50_ATF")
                 .addCustomTarget("custom1", "value2")
                 .addCustomTarget("custom2", "value1")
                 .setAutoRefreshSeconds(38)
                 .build();
-     */
-    /*
-    private static FreestarAdSlot adSlot = new FreestarAdSlot.Builder()
+    private static FreestarAdSlot adSlotA = new FreestarAdSlot.Builder()
             .setPlacementId("freestar_androidapp_300x250_InContent")
                 .addCustomTarget("custom1", "value2")
                 .addCustomTarget("custom2", "value1")
                 .setAutoRefreshSeconds(38)
                 .build();
-     */
 
-    private static DfpAdSlot adSlot = new DfpAdSlot.Builder()
+    private static DfpAdSlot adSlotB = new DfpAdSlot.Builder()
             .setDfpPlacementId("/15184186/freestar_androidapp_320x50_ATF")
             .addSize(320, 50)
             .addCustomTarget("custom1", "value2")
@@ -49,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             .setAutoRefreshSeconds(30)
             .build();
 
-    private static DfpAdSlot adSlotB = new DfpAdSlot.Builder()
+    private static DfpAdSlot adSlotC = new DfpAdSlot.Builder()
             .setDfpPlacementId("/15184186/freestar_androidapp_300x250_InContent")
             .addSize(300, 250)
             .addCustomTarget("custom1", "value2")
@@ -84,7 +82,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ViewGroup adView = findViewById(R.id.ads_layout);
         FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(adSlot);
-        injector.injectBannerAdByDfp(adView, adSlot);
+        injector.injectBannerAd(
+                adView,
+                new InjectorProperties.Builder().build(),
+                adSlot);
 
         textViewPlayer1 = findViewById(R.id.text_view_p1);
         textViewPlayer2 = findViewById(R.id.text_view_p2);
