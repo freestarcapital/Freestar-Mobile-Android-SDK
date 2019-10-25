@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="FreestarBannerAd2">
+        <attr name="adSize" format="string" />
+        <attr name="adUnitId" format="string" />
+        <attr name="customTargets" format="string" />
+    </declare-styleable>
+
+</resources>
