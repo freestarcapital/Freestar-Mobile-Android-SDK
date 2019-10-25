@@ -8,12 +8,13 @@ We are pleased to announce the release of our SDK! Banner ad formats are current
 |  Version  |     Release Date     |                Description                |
 | --------- | -------------------- | ----------------------------------------- |
 | __1.0.0__ | _October 14th, 2019_ |  • Initial release.                       |
+| __1.0.1__ | _October 25th, 2019_ |  • move to api v1.0.1.                    |
 
 ###### GMA SDK Compatibility Matrix
 
 | FSAdSDK Version | GMS play-services-ads Version | Repository |
 | --------------- | ----------------------------- | ---------- |
-| _____1.0.0_____ | ___________18.2.0____________ |  jcenter() |
+| _____1.0.1_____ | ___________18.2.0____________ |  jcenter() |
 
 ---
 #### Minimum Requirements
