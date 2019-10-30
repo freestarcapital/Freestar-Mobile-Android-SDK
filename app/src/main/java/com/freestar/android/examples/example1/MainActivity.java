@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FreestarAdModel.getInstance(this);
         setContentView(R.layout.activity_main);
 
-        ViewGroup adView = findViewById(R.id.ad_placement1);
+        ViewGroup adView = findViewById(R.id.ad_container);
         FreestarViewInjector injector = FreestarAdModel.getInstance(this).lookupViewInjector(adSlot);
         injector.injectBannerAd(
                 adView,

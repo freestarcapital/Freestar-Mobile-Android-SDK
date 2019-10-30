@@ -130,7 +130,7 @@
             />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/ads_layout"
+        android:id="@+id/ad_container"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:gravity="bottom"
