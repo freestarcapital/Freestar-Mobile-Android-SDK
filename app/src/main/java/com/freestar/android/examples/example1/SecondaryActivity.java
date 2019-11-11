@@ -1,26 +1,25 @@
 package com.freestar.android.examples.example1;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-    private View textViewAd1A;
-    private View textViewAd1B;
+public class SecondaryActivity extends AppCompatActivity {
+
+    private View textViewAd2A;
+    private View textViewAd2B;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_secondary);
 
-        textViewAd1A = findViewById(R.id.text_view_ad_1a);
-        textViewAd1B = findViewById(R.id.text_view_ad_1b);
+        textViewAd2A = findViewById(R.id.text_view_ad_2a);
+        textViewAd2B = findViewById(R.id.text_view_ad_2b);
         Button buttonReset = findViewById(R.id.button_reset);
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void activityJump() {
-        Intent intent = new Intent(this, SecondaryActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         this.startActivity(intent);
     }
 
@@ -43,5 +42,4 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
     }
-
 }

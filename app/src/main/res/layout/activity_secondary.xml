@@ -13,19 +13,19 @@
         >
 
         <TextView
-            android:id="@+id/text_view_ad_1a"
+            android:id="@+id/text_view_ad_2a"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ad Example #1-A"
+            android:text="Ad Example #2-A"
             android:textSize="30sp"
             android:freezesText="true"
         />
         <TextView
-            android:id="@+id/text_view_ad_1b"
+            android:id="@+id/text_view_ad_2b"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text_view_ad_1a"
-           android:text="Ad Example #1-B"
+            android:layout_below="@+id/text_view_ad_2a"
+           android:text="Ad Example #2-B"
            android:textSize="30sp"
            android:freezesText="true"
         />
