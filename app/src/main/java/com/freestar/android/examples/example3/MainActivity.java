@@ -1,4 +1,4 @@
-package com.freestar.android.examples.example1;
+package com.freestar.android.examples.example3;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
