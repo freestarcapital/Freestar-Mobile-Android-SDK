@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.freestar.android.sdk.adslot.AdSlotManager;
 import com.freestar.android.sdk.adslot.DfpAdSlot;
 import com.freestar.android.sdk.domain.DemandFetcher;
 import com.freestar.android.sdk.model.FreestarAdModel;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private View textViewAd1B;
     DemandFetcher f;
     FreestarAdListener lis;
+    AdSlotManager mm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,19 +70,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ViewGroup adViewA = findViewById(R.id.ad_container1A);
-        adViewA.setBackgroundColor(Color.parseColor("#00ff00"));
+//        adViewA.setBackgroundColor(Color.parseColor("#00ff00"));
         FreestarViewInjector injectorA = FreestarAdModel.getInstance(this).lookupViewInjector(adSlotA);
         injectorA.injectBannerAd(
                 adViewA,
                 new InjectorProperties.Builder().build(),
                 adSlotA);
         ViewGroup adViewB = findViewById(R.id.ad_container1B);
-        adViewB.setBackgroundColor(Color.parseColor("#00ff00"));
+//        adViewB.setBackgroundColor(Color.parseColor("#00ff00"));
         FreestarViewInjector injectorB = FreestarAdModel.getInstance(this).lookupViewInjector(adSlotB);
         injectorB.injectBannerAd(
                 adViewB,
                 new InjectorProperties.Builder().build(),
                 adSlotB);
+
+//        adSlotA.setLocation(new Location("bks"));
+//        adSlotB.setLocation(new Location("julee"));
     }
 
     private void activityJump() {
@@ -112,6 +118,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        ViewGroup adViewA = findViewById(R.id.ad_container1A);
+        adViewA.removeAllViews();
+        ViewGroup adViewB = findViewById(R.id.ad_container1B);
+        adViewB.removeAllViews();
         FreestarAdModel.getInstance(this).lookupViewInjector(adSlotA).destroyAd();
         FreestarAdModel.getInstance(this).lookupViewInjector(adSlotB).destroyAd();
         FreestarAdModel.releaseInstance(this);

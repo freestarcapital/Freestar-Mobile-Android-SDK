@@ -52,14 +52,14 @@ public class SecondaryActivity extends AppCompatActivity {
         });
 
         ViewGroup adViewA = findViewById(R.id.ad_container2A);
-        adViewA.setBackgroundColor(Color.parseColor("#00aa00"));
+        //adViewA.setBackgroundColor(Color.parseColor("#00aa00"));
         FreestarViewInjector injectorA = FreestarAdModel.getInstance(this).lookupViewInjector(adSlotA);
         injectorA.injectBannerAd(
                 adViewA,
                 new InjectorProperties.Builder().build(),
                 adSlotA);
         ViewGroup adViewB = findViewById(R.id.ad_container2B);
-        adViewB.setBackgroundColor(Color.parseColor("#00aa00"));
+        //adViewB.setBackgroundColor(Color.parseColor("#00aa00"));
         FreestarViewInjector injectorB = FreestarAdModel.getInstance(this).lookupViewInjector(adSlotB);
         injectorB.injectBannerAd(
                 adViewB,
@@ -99,7 +99,6 @@ public class SecondaryActivity extends AppCompatActivity {
     protected void onDestroy() {
         FreestarAdModel.getInstance(this).lookupViewInjector(adSlotA).destroyAd();
         FreestarAdModel.getInstance(this).lookupViewInjector(adSlotB).destroyAd();
-        FreestarAdModel.releaseInstance(this);
         super.onDestroy();
     }
 }
