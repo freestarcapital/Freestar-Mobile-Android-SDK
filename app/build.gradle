@@ -4,8 +4,8 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.freestar.android.examples.example1"
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -29,5 +29,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    api 'com.freestar.android:freestarSDK:1.0.4-SNAPSHOT'
+    api 'com.freestar.android:freestarSDK:1.0.3'
+    api files( 'libs/ConfiantSDK_framework_3.3.1.aar' )
 }

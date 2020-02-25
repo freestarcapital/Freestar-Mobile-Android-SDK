@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.confiant.sdk.ConfiantKit;
+import com.confiant.sdk.SettingsBuilder;
+import com.confiant.sdk.Status;
+import com.confiant.sdk.StatusCallback;
 import com.freestar.android.sdk.adslot.AdSlotManager;
 import com.freestar.android.sdk.adslot.DfpAdSlot;
 import com.freestar.android.sdk.domain.DemandFetcher;
@@ -21,6 +25,7 @@ import com.freestar.android.sdk.model.FreestarInteraction;
 import com.freestar.android.sdk.model.FreestarViewInjector;
 import com.freestar.android.sdk.model.InjectorProperties;
 import com.freestar.android.sdk.widget.holder.FreestarAdListener;
+import com.freestar.common.LogUtil;
 
 public class MainActivity extends AppCompatActivity {
     private static final boolean interactionSuccess = new FreestarInteraction.Builder()
@@ -52,6 +57,17 @@ public class MainActivity extends AppCompatActivity {
     DemandFetcher f;
     FreestarAdListener lis;
     AdSlotManager mm;
+
+    static {
+        final @NonNull SettingsBuilder settingsBuilder = new SettingsBuilder().withPropertyID("i0pU4gfzb-opTaw3FzyGGbraZ-g");
+        ConfiantKit.instance.initialize(settingsBuilder, new StatusCallback(){
+            @Override public void callback(Status status) {
+                LogUtil.i("Freestar", "Confiant initialize status: " + status.getDescription());
+// TODO: check errors
+            }
+        });
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
