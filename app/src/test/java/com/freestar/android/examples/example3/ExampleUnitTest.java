@@ -1,4 +1,4 @@
-package com.freestar.android.examples.example1;
+package com.freestar.android.examples.example3;
 
 import org.junit.Test;
 
