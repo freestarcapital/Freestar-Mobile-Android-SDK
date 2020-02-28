@@ -26,8 +26,10 @@ import com.freestar.android.sdk.model.FreestarViewInjector;
 import com.freestar.android.sdk.model.InjectorProperties;
 import com.freestar.android.sdk.widget.holder.FreestarAdListener;
 import com.freestar.common.LogUtil;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnInitializationCompleteListener {
     private static final boolean interactionSuccess = new FreestarInteraction.Builder()
             .addDisplayOption("<html><body><h2 style='color:red;font-size:40px'>Your patronage helps us better support you</h2></body></html>")
             .addDisplayOption("<html><body><h2 style='color:red;font-size:40px'>Please support our sponsors</h2></body></html>")
@@ -54,25 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
     private View textViewAd1A;
     private View textViewAd1B;
-    DemandFetcher f;
-    FreestarAdListener lis;
-    AdSlotManager mm;
-
-    static {
-        final @NonNull SettingsBuilder settingsBuilder = new SettingsBuilder().withPropertyID("i0pU4gfzb-opTaw3FzyGGbraZ-g");
-        ConfiantKit.instance.initialize(settingsBuilder, new StatusCallback(){
-            @Override public void callback(Status status) {
-                LogUtil.i("Freestar", "Confiant initialize status: " + status.getDescription());
-// TODO: check errors
-            }
-        });
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FreestarAdModel.getInstance(this);
+        FreestarAdModel.getInstance(this).setOnInitilizationCompeteListener(this);
         setContentView(R.layout.activity_main);
 
         textViewAd1A = findViewById(R.id.text_view_ad_1a);
@@ -142,5 +130,18 @@ public class MainActivity extends AppCompatActivity {
         FreestarAdModel.getInstance(this).lookupViewInjector(adSlotB).destroyAd();
         FreestarAdModel.releaseInstance(this);
         super.onDestroy();
+    }
+
+    @Override
+    public void onInitializationComplete(InitializationStatus initializationStatus) {
+        final @NonNull SettingsBuilder settingsBuilder = new SettingsBuilder()
+                .withPropertyID("i0pU4gfzb-opTaw3FzyGGbraZ-g")
+                .withAlwaysBlocking(true);
+        ConfiantKit.instance.initialize(settingsBuilder, new StatusCallback(){
+            @Override public void callback(Status status) {
+                LogUtil.i("Freestar", "Confiant initialize status: " + status.getDescription());
+// TODO: check errors
+            }
+        });
     }
 }
