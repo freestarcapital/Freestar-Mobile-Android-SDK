@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.confiant.sdk.BlockedCallback;
+import com.confiant.sdk.CallbackResult;
 import com.confiant.sdk.ConfiantKit;
 import com.confiant.sdk.SettingsBuilder;
 import com.confiant.sdk.Status;
@@ -60,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements OnInitializationC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FreestarAdModel.getInstance(this).setOnInitilizationCompeteListener(this);
         setContentView(R.layout.activity_main);
+        FreestarAdModel.getInstance(this).setOnInitilizationCompeteListener(this);
 
         textViewAd1A = findViewById(R.id.text_view_ad_1a);
         textViewAd1B = findViewById(R.id.text_view_ad_1b);
@@ -134,14 +136,30 @@ public class MainActivity extends AppCompatActivity implements OnInitializationC
 
     @Override
     public void onInitializationComplete(InitializationStatus initializationStatus) {
+        onThirdPartyPartySDKsInitialized(true);
+    }
+
+    private final void onThirdPartyPartySDKsInitialized(final boolean confiantBlockEverythingForDebugPurposes) {
         final @NonNull SettingsBuilder settingsBuilder = new SettingsBuilder()
                 .withPropertyID("i0pU4gfzb-opTaw3FzyGGbraZ-g")
-                .withAlwaysBlocking(true);
+                .withAlwaysBlocking(confiantBlockEverythingForDebugPurposes);
+
+        ConfiantKit.instance.setBlockedCallback(new BlockedCallback() {
+
+            @Override
+            public void callback(CallbackResult callbackResult) {
+                LogUtil.i("Freestar", "Confiant did block Ad: " +
+                        callbackResult.genericRepresentation().toString());
+            }
+        });
+
         ConfiantKit.instance.initialize(settingsBuilder, new StatusCallback(){
+
             @Override public void callback(Status status) {
                 LogUtil.i("Freestar", "Confiant initialize status: " + status.getDescription());
 // TODO: check errors
             }
         });
     }
+
 }
